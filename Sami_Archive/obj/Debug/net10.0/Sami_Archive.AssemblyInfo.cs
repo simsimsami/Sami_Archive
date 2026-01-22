@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Sami_Archive")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d9a90cefb518aa2ed5c7e88bd2f26ce9e4fde177")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4b2ce1996d14400ced1b3de2c7b63ea8c13ef839")]
 [assembly: System.Reflection.AssemblyProductAttribute("Sami_Archive")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Sami_Archive")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
