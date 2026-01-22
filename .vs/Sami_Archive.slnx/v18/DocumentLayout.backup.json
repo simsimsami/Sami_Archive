@@ -1,22 +1,30 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\dev\\Sami_Archieve\\",
+  "WorkspaceRootPath": "C:\\dev\\Sami_Archive\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{147622F0-EE52-27C1-6E82-71CB0A33430B}|Sami_Archieve\\Sami_Archieve.csproj|c:\\dev\\sami_archieve\\sami_archieve\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{147622F0-EE52-27C1-6E82-71CB0A33430B}|Sami_Archieve\\Sami_Archieve.csproj|solutionrelative:sami_archieve\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{5628A902-7B36-29E8-01E0-A5902AC4F8F7}|Sami_Archive\\Sami_Archive.csproj|c:\\dev\\sami_archive\\sami_archive\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{5628A902-7B36-29E8-01E0-A5902AC4F8F7}|Sami_Archive\\Sami_Archive.csproj|solutionrelative:sami_archive\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{147622F0-EE52-27C1-6E82-71CB0A33430B}|Sami_Archieve\\Sami_Archieve.csproj|c:\\dev\\sami_archieve\\sami_archieve\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{147622F0-EE52-27C1-6E82-71CB0A33430B}|Sami_Archieve\\Sami_Archieve.csproj|solutionrelative:sami_archieve\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{5628A902-7B36-29E8-01E0-A5902AC4F8F7}|Sami_Archive\\Sami_Archive.csproj|c:\\dev\\sami_archive\\sami_archive\\models\\istorerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5628A902-7B36-29E8-01E0-A5902AC4F8F7}|Sami_Archive\\Sami_Archive.csproj|solutionrelative:sami_archive\\models\\istorerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{147622F0-EE52-27C1-6E82-71CB0A33430B}|Sami_Archieve\\Sami_Archieve.csproj|c:\\dev\\sami_archieve\\sami_archieve\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{147622F0-EE52-27C1-6E82-71CB0A33430B}|Sami_Archieve\\Sami_Archieve.csproj|solutionrelative:sami_archieve\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{5628A902-7B36-29E8-01E0-A5902AC4F8F7}|Sami_Archive\\Sami_Archive.csproj|c:\\dev\\sami_archive\\sami_archive\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5628A902-7B36-29E8-01E0-A5902AC4F8F7}|Sami_Archive\\Sami_Archive.csproj|solutionrelative:sami_archive\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{147622F0-EE52-27C1-6E82-71CB0A33430B}|Sami_Archieve\\Sami_Archieve.csproj|c:\\dev\\sami_archieve\\sami_archieve\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{147622F0-EE52-27C1-6E82-71CB0A33430B}|Sami_Archieve\\Sami_Archieve.csproj|solutionrelative:sami_archieve\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{5628A902-7B36-29E8-01E0-A5902AC4F8F7}|Sami_Archive\\Sami_Archive.csproj|c:\\dev\\sami_archive\\sami_archive\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5628A902-7B36-29E8-01E0-A5902AC4F8F7}|Sami_Archive\\Sami_Archive.csproj|solutionrelative:sami_archive\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5628A902-7B36-29E8-01E0-A5902AC4F8F7}|Sami_Archive\\Sami_Archive.csproj|c:\\dev\\sami_archive\\sami_archive\\models\\seeddata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5628A902-7B36-29E8-01E0-A5902AC4F8F7}|Sami_Archive\\Sami_Archive.csproj|solutionrelative:sami_archive\\models\\seeddata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5628A902-7B36-29E8-01E0-A5902AC4F8F7}|Sami_Archive\\Sami_Archive.csproj|c:\\dev\\sami_archive\\sami_archive\\models\\efstorerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5628A902-7B36-29E8-01E0-A5902AC4F8F7}|Sami_Archive\\Sami_Archive.csproj|solutionrelative:sami_archive\\models\\efstorerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -32,52 +40,78 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\dev\\Sami_Archieve\\Sami_Archieve\\Views\\Home\\Index.cshtml",
-              "RelativeDocumentMoniker": "Sami_Archieve\\Views\\Home\\Index.cshtml",
-              "ToolTip": "C:\\dev\\Sami_Archieve\\Sami_Archieve\\Views\\Home\\Index.cshtml",
-              "RelativeToolTip": "Sami_Archieve\\Views\\Home\\Index.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAIAAAAAAAAAA==",
+              "DocumentMoniker": "C:\\dev\\Sami_Archive\\Sami_Archive\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "Sami_Archive\\Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\dev\\Sami_Archive\\Sami_Archive\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "Sami_Archive\\Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-19T18:51:10.777Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "HomeController.cs",
-              "DocumentMoniker": "C:\\dev\\Sami_Archieve\\Sami_Archieve\\Controllers\\HomeController.cs",
-              "RelativeDocumentMoniker": "Sami_Archieve\\Controllers\\HomeController.cs",
-              "ToolTip": "C:\\dev\\Sami_Archieve\\Sami_Archieve\\Controllers\\HomeController.cs",
-              "RelativeToolTip": "Sami_Archieve\\Controllers\\HomeController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-19T18:50:42.714Z",
+              "WhenOpened": "2026-01-22T20:22:50.334Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\dev\\Sami_Archieve\\Sami_Archieve\\Program.cs",
-              "RelativeDocumentMoniker": "Sami_Archieve\\Program.cs",
-              "ToolTip": "C:\\dev\\Sami_Archieve\\Sami_Archieve\\Program.cs",
-              "RelativeToolTip": "Sami_Archieve\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAUAAAAAAAAAA==",
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "C:\\dev\\Sami_Archive\\Sami_Archive\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "Sami_Archive\\Controllers\\HomeController.cs",
+              "ToolTip": "C:\\dev\\Sami_Archive\\Sami_Archive\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "Sami_Archive\\Controllers\\HomeController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-19T18:40:34.635Z",
+              "WhenOpened": "2026-01-22T20:21:13.427Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "SeedData.cs",
+              "DocumentMoniker": "C:\\dev\\Sami_Archive\\Sami_Archive\\Models\\SeedData.cs",
+              "RelativeDocumentMoniker": "Sami_Archive\\Models\\SeedData.cs",
+              "ToolTip": "C:\\dev\\Sami_Archive\\Sami_Archive\\Models\\SeedData.cs",
+              "RelativeToolTip": "Sami_Archive\\Models\\SeedData.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABcAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-22T20:16:43.128Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "EFStoreRepository.cs",
+              "DocumentMoniker": "C:\\dev\\Sami_Archive\\Sami_Archive\\Models\\EFStoreRepository.cs",
+              "RelativeDocumentMoniker": "Sami_Archive\\Models\\EFStoreRepository.cs",
+              "ToolTip": "C:\\dev\\Sami_Archive\\Sami_Archive\\Models\\EFStoreRepository.cs",
+              "RelativeToolTip": "Sami_Archive\\Models\\EFStoreRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-22T20:12:50.677Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "IStoreRepository.cs",
+              "DocumentMoniker": "C:\\dev\\Sami_Archive\\Sami_Archive\\Models\\IStoreRepository.cs",
+              "RelativeDocumentMoniker": "Sami_Archive\\Models\\IStoreRepository.cs",
+              "ToolTip": "C:\\dev\\Sami_Archive\\Sami_Archive\\Models\\IStoreRepository.cs",
+              "RelativeToolTip": "Sami_Archive\\Models\\IStoreRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-22T20:11:10.078Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "launchSettings.json",
-              "DocumentMoniker": "C:\\dev\\Sami_Archieve\\Sami_Archieve\\Properties\\launchSettings.json",
-              "RelativeDocumentMoniker": "Sami_Archieve\\Properties\\launchSettings.json",
-              "ToolTip": "C:\\dev\\Sami_Archieve\\Sami_Archieve\\Properties\\launchSettings.json",
-              "RelativeToolTip": "Sami_Archieve\\Properties\\launchSettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAHAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-01-19T18:29:45.255Z",
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\dev\\Sami_Archive\\Sami_Archive\\Program.cs",
+              "RelativeDocumentMoniker": "Sami_Archive\\Program.cs",
+              "ToolTip": "C:\\dev\\Sami_Archive\\Sami_Archive\\Program.cs",
+              "RelativeToolTip": "Sami_Archive\\Program.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAB4AAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-22T20:08:44.732Z",
               "EditorCaption": ""
             }
           ]

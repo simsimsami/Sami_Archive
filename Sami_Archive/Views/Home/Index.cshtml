@@ -1,0 +1,12 @@
+﻿@model IQueryable<Sami_Archive.Models.Product>
+
+@foreach (var p in Model ?? Enumerable.Empty<Sami_Archive.Models.Product>())
+{
+    <div>
+        <h3>@p.Title</h3>
+        @p.Description
+        <ul>
+            @p.Genre
+        </ul>
+    </div>
+}
