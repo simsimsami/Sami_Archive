@@ -6,6 +6,6 @@ namespace Sami_Archive.Models
     {
         public StoreDbContext(DbContextOptions<StoreDbContext> options) : base(options) { }
 
-        public DbSet<Product> Products => Set<Product>();
+        public DbSet<Book> Books => Set<Book>();
     }
 }

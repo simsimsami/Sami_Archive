@@ -12,7 +12,7 @@ builder.Services.AddDbContext<StoreDbContext>(opts =>
         builder.Configuration["ConnectionStrings:SamisArchiveConnection"]);
 });
 
-builder.Services.AddScoped<IStoreRepository, EFStoreRepository>();
+builder.Services.AddScoped<IBookRepository, EFBookRepository>();
 
 var app = builder.Build();
 

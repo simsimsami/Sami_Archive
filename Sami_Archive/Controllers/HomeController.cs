@@ -5,13 +5,13 @@ namespace Sami_Archieve.Controllers
 {
     public class HomeController : Controller
     {
-        private IStoreRepository repository;
+        private IBookRepository repository;
 
-        public HomeController(IStoreRepository repo)
+        public HomeController(IBookRepository repo)
         {
             repository = repo;
         }
 
-        public IActionResult Index() => View(repository.Products);
+        public IActionResult Index() => View(repository.Books);
     }
 }

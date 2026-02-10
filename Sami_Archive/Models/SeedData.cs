@@ -14,10 +14,10 @@ namespace Sami_Archive.Models
                 context.Database.Migrate();
             }
 
-            if (!context.Products.Any())
+            if (!context.Books.Any())
             {
-                context.Products.AddRange(
-                    new Product
+                context.Books.AddRange(
+                    new Book
                     {
                         Title = "Necromancer Supreme Vol 1", Description = "Introduction to the first necromancer", Genre = "Fantasy"
                     });
