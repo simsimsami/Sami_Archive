@@ -1,6 +1,6 @@
-@Sami_Archieve_HostAddress = http://localhost:5180
+@Sami_Archive_HostAddress = http://localhost:5180
 
-GET {{Sami_Archieve_HostAddress}}/weatherforecast/
+GET {{Sami_Archive_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
