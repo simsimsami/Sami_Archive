@@ -1,6 +1,6 @@
 ﻿@model BooksListViewModels
 
-@foreach (var p in Model?.Books ?? Enumerable.Empty<Sami_Archive.Models.Book>())
+@foreach (var p in Model?.Books ?? Enumerable.Empty<Book>())
 {
     <div>
         <h3>@p.Title</h3>
@@ -8,3 +8,5 @@
         <p>@p.Genre</p>
     </div>
 }
+
+<div page-model="@Model?.PagingInfo" page-action="Index"></div>

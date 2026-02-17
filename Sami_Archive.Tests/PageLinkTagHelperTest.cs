@@ -8,11 +8,18 @@ using Moq;
 using Sami_Archive.Infrastructure;
 using Sami_Archive.Models.ViewModels;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Sami_Archive.Tests
 {
     public class PageLinkTagHelperTest
     {
+        private readonly ITestOutputHelper _output;
+
+        public PageLinkTagHelperTest(ITestOutputHelper output)
+        {
+            _output = output;
+        }
         [Fact]
         public void Can_Generate_Page_Links()
         {
@@ -41,19 +48,27 @@ namespace Sami_Archive.Tests
                 PageAction = "Test"
             };
 
-            TagHelperContext ctx = new TagHelperContext(new TagHelperAttributeList(), new Dictionary<object, object>(), "");
+            TagHelperContext ctx = new TagHelperContext(
+                new TagHelperAttributeList(), 
+                new Dictionary<object, object>(), "");
 
             var content = new Mock<TagHelperContent>();
-            TagHelperOutput output = new TagHelperOutput("div", new TagHelperAttributeList(), (cache, encoder) => Task.FromResult(content.Object));
+            TagHelperOutput output = new TagHelperOutput("div", 
+                new TagHelperAttributeList(), 
+                (cache, encoder) => Task.FromResult(content.Object));
 
             // Act
             helper.Process(ctx, output);
 
+            var actual = output.Content.GetContent();
+            _output.WriteLine("Output: ");
+            _output.WriteLine(actual);
+            var expected = @"<a href=""Test/Page1"">1</a>" + @"<a href=""Test/Page2"">2</a>" + @"<a href=""Test/Page3"">3</a>";
+
             // Assert
-            Assert.Equal(@"<a href=""Test/Page1"">1</a>"
-                + @"<a href=""Test/Page2"">2</a>"
-                + @"<a href=""Test/Page3"">3</a>",
-                output.Content.GetContent());
+            Assert.NotNull(actual);
+            Assert.Equal(expected, actual);
+
         }
     }
 }
