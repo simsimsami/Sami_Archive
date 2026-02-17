@@ -16,15 +16,16 @@ builder.Services.AddScoped<IBookRepository, EFBookRepository>();
 
 var app = builder.Build();
 
+app.UseStaticFiles();
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
 
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapControllerRoute("pagination",
+    "Books/Page{bookPage}",
+    new { Controller = "Home", action = "Index" });
 
 app.MapControllers();
 
