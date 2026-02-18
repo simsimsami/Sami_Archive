@@ -27,7 +27,15 @@ app.MapControllerRoute("pagination",
     "Books/Page{bookPage}",
     new { Controller = "Home", action = "Index" });
 
-app.MapControllers();
+app.MapControllerRoute("genre",
+    "Books/{genre}/Page{bookPage}",
+    new { Controller = "Home", action = "Index" });
+
+app.MapControllerRoute("title",
+    "{title}",
+    new { Controller = "Home", action = "Index"});
+
+app.MapDefaultControllerRoute();
 
 SeedData.EnsurePopulated(app);
 
