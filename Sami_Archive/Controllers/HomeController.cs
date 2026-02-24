@@ -6,6 +6,7 @@ namespace Sami_Archive.Controllers
 {
     public class HomeController : Controller
     {
+        // The home controller is the library
         private IBookRepository repository;
 
         public HomeController(IBookRepository repo)
