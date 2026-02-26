@@ -13,26 +13,32 @@ namespace Sami_Archive.Controllers
             _context = context;
         } 
 
-        [HttpGet("Book/{id}")]
-        public async Task<IActionResult> GetBook(long id)
+
+        public async Task<IActionResult> Edit(long id)
         {
             var book = await _context.Books.FindAsync(id);
-            return book == null ? NotFound() : Ok(book);
+            return book == null ? NotFound() : View(book);
         }
+
+        // View result will help with PUT and READ
+
+        public ViewResult Create() => View();
 
         // POST: /Book/Create
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Book book)
+        public async Task<IActionResult> Create(Book book)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.Books.Add(book);
-                await _context.SaveChangesAsync();
-                return CreatedAtAction(nameof(GetBook), new { id = book.BookID }, book);
+                return View(book); 
             }
-            return View(book);
+
+            _context.Books.Add(book);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Create), new { id = book.BookID });
         }
 
-        // PUT: /Book/Put
+        
     }
 }

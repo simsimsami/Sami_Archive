@@ -28,13 +28,13 @@ namespace Sami_Archive.Tests
             }).AsQueryable<Book>());
 
             // Arrange the controller and page size
-            HomeController controller = new HomeController(mock.Object) { PageSize = 2};
+            HomeController controller = new HomeController(mock.Object) { PageSize = 2 };
 
             // Act - declare a view model
             BooksListViewModels result = controller.Index(null, 1)?.ViewData.Model as BooksListViewModels ?? new();
 
             // Assert the pagination view model
-            
+
             PagingInfo pageInfo = result.PagingInfo;
             Assert.NotNull(pageInfo);
             Assert.Equal(1, pageInfo.CurrentPage);
@@ -94,6 +94,33 @@ namespace Sami_Archive.Tests
             Assert.True(bookArray.Length == 2);
             Assert.NotNull(bookArray);
 
+        }
+
+        [Fact]
+        public void Can_Filter_Books()
+        {
+            // Arrange - setup mock repo
+            Mock<IBookRepository> mock = new Mock<IBookRepository>();
+            mock.Setup(m => m.Books).Returns((new Book[]
+            {
+                new Book { BookID = 1, Title = "B1", Description = "B1", Genre = "Comedy" },
+                new Book { BookID = 2, Title = "B2", Description = "B2", Genre = "Comedy" },
+                new Book { BookID = 3, Title = "B3", Description = "B3", Genre = "Drama" },
+                new Book { BookID = 4, Title = "B4", Description = "B4", Genre = "Action" },
+                new Book { BookID = 5, Title = "B5", Description = "B5", Genre = "Sci-Fi" },
+            }).AsQueryable<Book>());
+
+            // Arrange - setup controller
+            HomeController controller = new HomeController(mock.Object);
+            controller.PageSize = 3;
+
+            // Action - setup filter
+            Book[] result = (controller.Index("Comedy", 1, null)?.ViewData.Model as BooksListViewModels ?? new()).Books.ToArray();
+
+            // Assert - compare result to expectation
+            Assert.Equal(2, result.Length);
+            Assert.True(result[0].Genre == "Comedy" && result[0].Title == "B1");
+            Assert.True(result[1].Genre == "Comedy" && result[1].Title == "B2");
         }
     }
 }
