@@ -1,5 +1,8 @@
 # Planner
 
+## books
+- Implement delete route
+
 ## Home screen planner
 - Dashboard
 - Random book or highlighted genre
