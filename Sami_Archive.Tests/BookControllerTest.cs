@@ -40,15 +40,48 @@ namespace Sami_Archive.Tests
             };
 
             // Act
-
             var result = await controller.Create(newBook);
 
             // Assert
-            var created = Assert.IsType<CreatedAtActionResult>(result);
-            var returnedBook = Assert.IsType<Book>(created.Value);
+            var redirect = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Index", redirect.ActionName);
 
-            Assert.Equal("Test Title", returnedBook.Title);
-            Assert.True(returnedBook.BookID > 0);
+            var saved = await context.Books.FirstAsync();
+            Assert.Equal("Test Title", saved.Title);
+        }
+
+        [Fact]
+        public async Task UpdateBook_WhenValid()
+        {
+            // Arrange
+            var context = CreateDbContext();
+            BookController controller = new BookController( context );
+
+            Book newBook = new Book
+            {
+                BookID = 1,
+                Title = "Test Title 1",
+                Description = "Test Description 1",
+                Genre = "Test Genre 1"
+            };
+
+            Book editBook = new Book
+            {
+                BookID = 1,
+                Title = "Test Title 2",
+                Description = "Test Description 2",
+                Genre = "Test Genre 2"
+            };
+
+            // Act
+            var result = await controller.Create(newBook);
+            var editResult = await controller.Edit(1, editBook);
+
+            // Assert
+            var redirect = Assert.IsType<RedirectToActionResult>(editResult);
+            Assert.Equal("Index", redirect.ActionName);
+            var saved = await context.Books.FirstAsync();
+            Assert.Equal("Test Title 2", saved.Title);
         }
 
         [Fact]

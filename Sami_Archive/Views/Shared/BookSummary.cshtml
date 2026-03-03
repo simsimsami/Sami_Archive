@@ -9,10 +9,10 @@
     <div class="card-text p-1">@Model?.Genre</div>
     <div class="card-text p-1">@Model?.Description</div>
 
-    <form id="@Model?.BookID" asp-controller="Book" asp-route-id="@Model?.BookID" asp-action="Edit">
-        <button type="submit"
-                class="btn btn-success btn-sm pull-right" style="float:right">
-            Edit Book
-        </button>
-    </form>
+    <div>
+        <a asp-controller="Book" 
+        asp-action="Edit" 
+        asp-route-BookID="@Model?.BookID"
+        class="btn btn-success btn-sm pull-right">Edit</a>
+    </div>
 </div>
