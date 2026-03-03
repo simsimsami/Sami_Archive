@@ -7,11 +7,35 @@ namespace Sami_Archive.Controllers
 {
     public class BookController : Controller
     {
+        public int PageSize = 4;
         private readonly StoreDbContext _context;
+        private IBookRepository repository;
 
-        public BookController(StoreDbContext context)
+        public BookController(StoreDbContext context, IBookRepository repo)
         {
             _context = context;
+            repository = repo;
+        }
+
+        public ViewResult List(string? genre, int bookPage = 1, string? title = null)
+        {
+            return View(new BooksListViewModels
+            {
+                Books = repository.Books
+                .Where(p => genre == null || p.Genre == genre)
+                .Where(p => title == null || p.Title == title)
+                .OrderBy(p => p.BookID)
+                .Skip((bookPage - 1) * PageSize)
+                .Take(PageSize),
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = bookPage,
+                    ItemsPerPage = PageSize,
+                    TotalItems = genre == null ? repository.Books.Count() : repository.Books.Where(e => e.Genre == genre).Count()
+                },
+                CurrentGenre = genre,
+                TitleFilter = title
+            });
         }
 
         [HttpGet]

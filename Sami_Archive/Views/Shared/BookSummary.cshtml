@@ -15,4 +15,10 @@
         asp-route-BookID="@Model?.BookID"
         class="btn btn-success btn-sm pull-right">Edit</a>
     </div>
+    <div>
+        <a asp-controller="Book"
+        asp-action="Delete"
+        asp-route-BookID="@Model?.BookID"
+           class="btn btn-success btn-sm pull-right">Delete</a>
+    </div>
 </div>
