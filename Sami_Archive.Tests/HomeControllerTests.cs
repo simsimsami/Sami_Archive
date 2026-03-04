@@ -89,7 +89,7 @@ namespace Sami_Archive.Tests
             // Act - getting access to the repo
             BooksListViewModels result = controller.Index(null, 2, null)?.ViewData.Model as BooksListViewModels ?? new();
 
-            // Assert - checking if the controller can access the repository
+            // Assert - checking if the controller can access the bookRepository
             Book[] bookArray = result.Books.ToArray();
             Assert.True(bookArray.Length == 2);
             Assert.NotNull(bookArray);

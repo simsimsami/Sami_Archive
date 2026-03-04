@@ -1,6 +1,6 @@
 ﻿@model Book
 
-<form asp-action="Edit" asp-route-id="@Model?.BookID" method="post" class="border border-black p-3 mb-3 col-6">
+<form asp-action="Edit" asp-route-BookID="@Model?.BookID" method="post" class="border border-black p-3 mb-3 col-6">
     <input asp-for="BookID" type="hidden" />
     <div class="form-group">
         <div class="mb-3">

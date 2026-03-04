@@ -7,11 +7,11 @@ namespace Sami_Archive.Controllers
     public class HomeController : Controller
     {
         // The home controller is the library
-        private IBookRepository repository;
+        private IBookRepository bookRepository;
 
         public HomeController(IBookRepository repo)
         {
-            repository = repo;
+            bookRepository = repo;
         }
 
         public int PageSize = 4;
@@ -20,7 +20,7 @@ namespace Sami_Archive.Controllers
         {
             return View(new BooksListViewModels
             {
-                Books = repository.Books
+                Books = bookRepository.Books
                 .Where(p => genre == null || p.Genre == genre)
                 .Where(p => title == null || p.Title == title)
                 .OrderBy(p => p.BookID)
@@ -30,7 +30,7 @@ namespace Sami_Archive.Controllers
                 {
                     CurrentPage = bookPage,
                     ItemsPerPage = PageSize,
-                    TotalItems = genre == null ? repository.Books.Count() : repository.Books.Where(e => e.Genre == genre).Count()
+                    TotalItems = genre == null ? bookRepository.Books.Count() : bookRepository.Books.Where(e => e.Genre == genre).Count()
                 },
                 CurrentGenre = genre,
                 TitleFilter = title

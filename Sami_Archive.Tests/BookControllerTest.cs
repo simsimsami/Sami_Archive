@@ -24,12 +24,18 @@ namespace Sami_Archive.Tests
             return new StoreDbContext( options );
         }
 
+        private BookController CreateController(StoreDbContext context)
+        {
+            var repo = new EFBookRepository(context);
+            return new BookController(context, repo);
+        }
+
         [Fact]
         public async Task CreateBook_WhenValid()
         {
             // Arrange
             var context = CreateDbContext();
-            BookController controller = new BookController( context );
+            BookController controller = CreateController(context);
 
             Book newBook = new Book
             {
@@ -49,13 +55,13 @@ namespace Sami_Archive.Tests
             var saved = await context.Books.FirstAsync();
             Assert.Equal("Test Title", saved.Title);
         }
-
+        
         [Fact]
         public async Task UpdateBook_WhenValid()
         {
             // Arrange
             var context = CreateDbContext();
-            BookController controller = new BookController( context );
+            BookController controller = CreateController(context);
 
             Book newBook = new Book
             {
@@ -83,17 +89,33 @@ namespace Sami_Archive.Tests
             var saved = await context.Books.FirstAsync();
             Assert.Equal("Test Title 2", saved.Title);
         }
-
+        
         [Fact]
-        public async Task CreateBook_WhenInvalid()
+        public async Task DeleteBook_WhenValid()
         {
             // Arrange
             var context = CreateDbContext();
-            BookController controller = new BookController( context );
+            BookController controller = CreateController(context);
 
-            controller.ModelState.AddModelError("Title", "Required");
+            Book newBook = new Book
+            {
+                BookID = 1,
+                Title = "Test Title 1",
+                Description = "Test Description 1",
+                Genre = "Test Genre 1"
 
+            };
 
+            // Act
+            var result = await controller.Create(newBook);
+            var deleteResult = await controller.Delete(1);
+            var listResult =  controller.List(null, 1, null);
+
+            // Assert
+            var view = Assert.IsType<ViewResult>(listResult);
+            var model = Assert.IsType<BooksListViewModels>(view.Model);
+
+            Assert.Empty(model.Books);
         }
     }
 }
