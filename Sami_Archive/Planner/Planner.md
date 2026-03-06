@@ -1,7 +1,7 @@
 # Planner
 
 ## books
-- Implement delete route
+- [x]Implement delete route
 
 ## Home screen planner
 - Dashboard
