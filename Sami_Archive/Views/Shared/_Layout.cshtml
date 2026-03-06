@@ -10,11 +10,16 @@
     <div class="bg-dark text-white p-2">
         <div class="container-fluid">
             <div class="row">
-                <div class="col navbar-brand">Samis Archive</div>
-                <div class="col-6 navbar-text text-end">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" asp-controller="Book" asp-action="Create">Create Book</a>
-                    </li>
+                <div>
+                    <a class="col navbar-brand" asp-controller="Home" asp-action="Index">
+                        Samis Archive
+                    </a>
+                </div>
+                <div class="col-6 text-end">
+                    <nav class="nav justify-content-end">
+                        <a class="nav-link text-white" asp-controller="Book" asp-action="Create">Create Book</a>
+                        <a class="nav-link text-white" asp-controller="Book" asp-action="List">Books List</a>
+                    </nav>
                 </div>
             </div>
         </div>

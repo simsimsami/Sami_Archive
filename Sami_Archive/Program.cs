@@ -25,15 +25,15 @@ if (app.Environment.IsDevelopment())
 
 app.MapControllerRoute("pagination",
     "Books/Page{bookPage}",
-    new { Controller = "Home", action = "Index" });
+    new { Controller = "Book", action = "Get" });
 
 app.MapControllerRoute("genre",
     "Books/{genre}/Page{bookPage}",
-    new { Controller = "Home", action = "Index" });
+    new { Controller = "Home", action = "Get" });
 
 app.MapControllerRoute("title",
     "{title}",
-    new { Controller = "Home", action = "Index"});
+    new { Controller = "Home", action = "Get" });
 
 app.MapDefaultControllerRoute();
 
