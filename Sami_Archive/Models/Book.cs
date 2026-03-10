@@ -4,9 +4,10 @@ namespace Sami_Archive.Models
 {
     public class Book
     {
-        public long? BookID { get; set; }
-        public string Title { get; set; } = String.Empty;
-        public string Description { get; set; } = String.Empty;
-        public string Genre { get; set; } = String.Empty;
+        public long BookID { get; set; }
+        public string BookTitle { get; set; } = String.Empty;
+        public string BookDescription { get; set; } = String.Empty;
+        public ICollection<Genre> Genres { get; } = new List<Genre>();
+        public ICollection<Author> Authors { get; } = new List<Author>();
     }
 }

@@ -17,23 +17,30 @@ namespace Sami_Archive.Controllers
             bookRepository = repo;
         }
 
-        public ViewResult List(string? genre = null, int bookPage = 1, string? title = null)
+        public ViewResult Index(int bookPage = 1, string? title = null)
         {
+            var query = bookRepository.Books
+                .Include(b => b.Genres)
+                .Include(b => b.Authors)
+                .Where(b => title == null || b.BookTitle == title);
+
+            var totalItems = query.Count();
+
+            var books = query
+                .OrderBy(b => b.BookID)
+                .Skip((bookPage - 1) * PageSize)
+                .Take(PageSize);
+
+
             return View(new BooksListViewModels
             {
-                Books = bookRepository.Books
-                .Where(p => genre == null || p.Genre == genre)
-                .Where(p => title == null || p.Title == title)
-                .OrderBy(p => p.BookID)
-                .Skip((bookPage - 1) * PageSize)
-                .Take(PageSize),
+                Books = books,
                 PagingInfo = new PagingInfo
                 {
                     CurrentPage = bookPage,
                     ItemsPerPage = PageSize,
-                    TotalItems = genre == null ? bookRepository.Books.Count() : bookRepository.Books.Where(e => e.Genre == genre).Count()
+                    TotalItems = totalItems
                 },
-                CurrentGenre = genre,
                 TitleFilter = title
             });
         }
@@ -100,7 +107,7 @@ namespace Sami_Archive.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteBook(long? BookID)
+        public async Task<IActionResult> DeleteBook(long BookID)
         {
             try
             {
@@ -109,7 +116,7 @@ namespace Sami_Archive.Controllers
                 {
                     return NotFound($"Book with ID = {BookID} not found");
                 }
-                await bookRepository.DeleteBookAsync(book);
+                await bookRepository.DeleteBookAsync(BookID);
 
                 return RedirectToAction("Index", "Home");
             }

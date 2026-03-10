@@ -14,104 +14,168 @@ namespace Sami_Archive.Models
                 context.Database.Migrate();
             }
 
+            if (!context.Genres.Any())
+            {
+                context.Genres.AddRange(
+                    new Genre
+                    {
+                        GenreTitle = "Fantasy"
+                    },
+                    new Genre
+                    {
+                        GenreTitle = "Sci Fi"
+                    },
+                    new Genre
+                    {
+                        GenreTitle = "Comedy"
+                    },
+                    new Genre
+                    {
+                        GenreTitle = "Drama"
+                    },
+                    new Genre
+                    {
+                        GenreTitle = "Anime"
+                    },
+                    new Genre
+                    {
+                        GenreTitle = "Blank"
+                    }
+                    );
+                context.SaveChanges();
+            }
+
+
+            if (!context.Authors.Any())
+            {
+                context.Authors.AddRange(
+                    new Author
+                    {
+                        AuthorName = "Blank",
+                    }
+                    );
+                context.SaveChanges();
+
+            }
+
+
             if (!context.Books.Any())
             {
+                var genreBlank = context.Genres.First(g => g.GenreTitle == "Blank");
+                var authorBlank = context.Authors.First(g => g.AuthorName == "Blank");
+
                 context.Books.AddRange(
                     new Book
                     {
-                        Title = "Necromancer Supreme Vol 1",
-                        Description = "Introduction to the first necromancer",
-                        Genre = "Fantasy",
+                        BookTitle = "Necromancer Supreme Vol 1",
+                        BookDescription = "Introduction to the first necromancer",
+                        Genres = { genreBlank },
+                        Authors = { authorBlank }
                     },
                     new Book
                     {
-                        Title = "Farmers Love",
-                        Description = "Farming and the great outdoors",
-                        Genre = "Drama"
+                        BookTitle = "Farmers Love",
+                        BookDescription = "Farming and the great outdoors",
+                        Genres = { genreBlank },
+                        Authors = { authorBlank }
                     },
                     new Book
                     {
-                        Title = "John Q",
-                        Description = "A colorful variety of crunchy veggie chips for snacking.",
-                        Genre = "Crime"
+                        BookTitle = "John Q",
+                        BookDescription = "A colorful variety of crunchy veggie chips for snacking.",
+                        Genres = { genreBlank },
+                        Authors = { authorBlank }
                     },
                     new Book
                     {
-                        Title = "Vow, The",
-                        Description = "Vegetable spiralizer for healthy meals.",
-                        Genre = "Drama"
+                        BookTitle = "Vow, The",
+                        BookDescription = "Vegetable spiralizer for healthy meals.",
+                        Genres = { genreBlank },
+                        Authors = { authorBlank }
                     },
                     new Book
                     {
-                        Title = "25 Watts",
-                        Description = "GPS pet collar that helps locate your pet via smartphone app.",
-                        Genre = "Comedy"
+                        BookTitle = "25 Watts",
+                        BookDescription = "GPS pet collar that helps locate your pet via smartphone app.",
+                        Genres = { genreBlank },
+                        Authors = { authorBlank }
                     },
                     new Book
                     {
-                        Title = "Mustalaishurmaaja",
-                        Description = "Cute dispenser for bathrooms or kitchens featuring paw prints.",
-                        Genre = "Drama"
+                        BookTitle = "Mustalaishurmaaja",
+                        BookDescription = "Cute dispenser for bathrooms or kitchens featuring paw prints.",
+                        Genres = { genreBlank },
+                        Authors = { authorBlank }
                     },
                     new Book
                     {
-                        Title = "16 Years of Alcohol",
-                        Description = "Creamy macaroni and cheese baked to perfection.",
-                        Genre = "Drama"
+                        BookTitle = "16 Years of Alcohol",
+                        BookDescription = "Creamy macaroni and cheese baked to perfection.",
+                        Genres = { genreBlank },
+                        Authors = { authorBlank }
                     },
                     new Book
                     {
-                        Title = "Por un puñado de besos",
-                        Description = "Elegant cover that protects your notebook with style.",
-                        Genre = "Drama"
+                        BookTitle = "Por un puñado de besos",
+                        BookDescription = "Elegant cover that protects your notebook with style.",
+                        Genres = { genreBlank },
+                        Authors = { authorBlank }
                     },
                     new Book
                     {
-                        Title = "Gertie the Dinosaur",
-                        Description = "Golden-brown fritters made with sweet corn.",
-                        Genre = "Animation"
+                        BookTitle = "Gertie the Dinosaur",
+                        BookDescription = "Golden-brown fritters made with sweet corn.",
+                        Genres = { genreBlank },
+                        Authors = { authorBlank }
                     },
                     new Book
                     {
-                        Title = "Goats",
-                        Description = "Delicious ravioli filled with creamy ricotta and fresh spinach.",
-                        Genre = "Comedy"
+                        BookTitle = "Goats",
+                        BookDescription = "Delicious ravioli filled with creamy ricotta and fresh spinach.",
+                        Genres = { genreBlank },
+                        Authors = { authorBlank }
                     },
                     new Book
                     {
-                        Title = "Page Turner, The (Tourneuse de pages, La)",
-                        Description = "Color-changing 3D night light for kids' rooms.",
-                        Genre = "Drama"
+                        BookTitle = "Page Turner, The (Tourneuse de pages, La)",
+                        BookDescription = "Color-changing 3D night light for kids' rooms.",
+                        Genres = { genreBlank },
+                        Authors = { authorBlank }
                     },
                     new Book
                     {
-                        Title = "God Bless America",
-                        Description = "Complete kit to make your own flavored lip balms at home.",
-                        Genre = "Comedy"
+                        BookTitle = "God Bless America",
+                        BookDescription = "Complete kit to make your own flavored lip balms at home.",
+                        Genres = { genreBlank },
+                        Authors = { authorBlank }
                     },
                     new Book
                     {
-                        Title = "Promised Land",
-                        Description = "Countertop dishwasher for small kitchens.",
-                        Genre = "Drama"
+                        BookTitle = "Promised Land",
+                        BookDescription = "Countertop dishwasher for small kitchens.",
+                        Genres = { genreBlank },
+                        Authors = { authorBlank }
                     },
                     new Book
                     {
-                        Title = "Abbott and Costello Meet Dr. Jekyll and Mr. Hyde",
-                        Description = "Complete kit for starting your own organic garden.",
-                        Genre = "Comedy"
+                        BookTitle = "Abbott and Costello Meet Dr. Jekyll and Mr. Hyde",
+                        BookDescription = "Complete kit for starting your own organic garden.",
+                        Genres = { genreBlank },
+                        Authors = { authorBlank }
                     },
                     new Book
                     {
-                        Title = "Love Actually",
-                        Description = "Seat belt attachment to keep dogs safe during car rides.",
-                        Genre = "Comedy"
+                        BookTitle = "Love Actually",
+                        BookDescription = "Seat belt attachment to keep dogs safe during car rides.",
+                        Genres = { genreBlank },
+                        Authors = { authorBlank }
                     },
                     new Book
                     {
-                        Title = "Critical Care",
-                        Description = "Sweet corn roasted to perfection for a delightful side.",
-                        Genre = "Comedy"
+                        BookTitle = "Critical Care",
+                        BookDescription = "Sweet corn roasted to perfection for a delightful side.",
+                        Genres = { genreBlank },
+                        Authors = { authorBlank }
                     }
                     );
                 context.SaveChanges();
