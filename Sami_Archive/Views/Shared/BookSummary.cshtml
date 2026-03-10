@@ -3,22 +3,29 @@
 <div class="card card-outline-primary m-1 p-1">
     <div class="bg-faded p-1">
         <h4>
-            @Model?.Title
+            @Model?.BookTitle
         </h4>
     </div>
-    <div class="card-text p-1">@Model?.Genre</div>
-    <div class="card-text p-1">@Model?.Description</div>
 
+    <div class="card-text p-1">
+
+        @foreach (var item in Model?.Genres)
+        {
+            @item.GenreTitle
+        }
+    </div>
+
+    <div class="card-text p-1">@Model?.BookDescription</div>
     <div>
-        <a asp-controller="Book" 
-        asp-action="Edit" 
-        asp-route-BookID="@Model?.BookID"
-        class="btn btn-success btn-sm pull-right">Edit</a>
+        <a asp-controller="Book"
+           asp-action="Edit"
+           asp-route-BookID="@Model?.BookID"
+           class="btn btn-success btn-sm pull-right">Edit</a>
     </div>
     <div>
         <a asp-controller="Book"
-        asp-action="DeleteForm"
-        asp-route-BookID="@Model?.BookID"
+           asp-action="DeleteForm"
+           asp-route-BookID="@Model?.BookID"
            class="btn btn-danger btn-sm pull-right">Delete</a>
     </div>
 </div>
