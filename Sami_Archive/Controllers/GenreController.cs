@@ -30,7 +30,7 @@ namespace Sami_Archive.Controllers
                 .Take(PageSize);
 
             return View(new GenresListViewModels
-                {
+            {
                 Genres = genres,
                 PagingInfo = new PagingInfo
                 {

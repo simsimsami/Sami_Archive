@@ -4,8 +4,6 @@
     {
         public IEnumerable<Genre> Genres { get; set; } = Enumerable.Empty<Genre>();
         public PagingInfo PagingInfo { get; set; } = new();
-        public string? GenreFilter { get; set; }
-
-
+        public string? TitleFilter { get; set; }
     }
 }
