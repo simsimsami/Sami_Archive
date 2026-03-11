@@ -5,6 +5,6 @@
         IQueryable<Genre> Genres { get; }
         Task AddGenreAsync(Genre genre);
         Task UpdateGenreAsync(Genre genre);
-        Task DeleteGenreAsync(Genre genre);
+        Task DeleteGenreAsync(long id);
     }
 }

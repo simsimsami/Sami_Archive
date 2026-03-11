@@ -5,7 +5,6 @@ namespace Sami_Archive.Models
     public class EFBookRepository : IBookRepository
     {
         private StoreDbContext _context;
-
         public EFBookRepository(StoreDbContext ctx)
         {
             _context = ctx;
@@ -16,7 +15,6 @@ namespace Sami_Archive.Models
             _context.Books.Add(book);
             await _context.SaveChangesAsync();
         }
-
         public async Task UpdateBookAsync(Book book)
         {
             var currentBook = await _context.Books
