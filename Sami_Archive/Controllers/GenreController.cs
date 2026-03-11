@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Sami_Archive.Models;
 using Sami_Archive.Models.ViewModels;
-using static System.Reflection.Metadata.BlobBuilder;
 
 namespace Sami_Archive.Controllers
 {
@@ -38,8 +37,19 @@ namespace Sami_Archive.Controllers
                     ItemsPerPage = PageSize,
                     TotalItems = totalItems
                 },
-                TitleFilter = title
+                GenreFilter = title
             });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(long? GenreID)
+        {
+            if (GenreID == null)
+            {
+                return NotFound();
+            }
+            var genre = await _context.Genres.FirstOrDefaultAsync(g => g.GenreID == GenreID);
+            return View(genre);
         }
     }
 }

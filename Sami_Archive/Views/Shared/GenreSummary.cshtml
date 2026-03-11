@@ -1,0 +1,20 @@
+﻿@model Genre
+
+<div class="card card-outline-primary m-1 p-1">
+    <div class="bg-faded p-1">
+        @Model?.GenreTitle
+    </div>
+</div>
+
+<div>
+    <a asp-controller="Genre"
+    asp-action="Edit"
+    asp-route-GenreID="@Model?.GenreID"
+    class="btn btn-success btn-sm pull-right">Edit</a>
+</div>
+<div>
+    <a asp-controller="Genre"
+       asp-action="DeleteForm"
+       asp-route-GenreID="@Model?.GenreID"
+       class="btn btn-danger btn-sm pull-right">Delete</a>
+</div>

@@ -48,11 +48,11 @@ namespace Sami_Archive.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(long? BookID)
         {
-            var book = await _context.Books.FindAsync(BookID);
-            if (book == null)
+            if (BookID == null)
             {
                 return NotFound();
             }
+            var book = await _context.Books.FirstOrDefaultAsync(b => b.BookID == BookID);
             return View(book);
         }
 
