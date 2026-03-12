@@ -64,7 +64,6 @@ namespace Sami_Archive.Controllers
                 try
                 {
                     await bookRepository.UpdateBookAsync(book);
-
                     return RedirectToAction("Index", "Home");
                 }
                 catch (DbUpdateConcurrencyException /* ex */)
