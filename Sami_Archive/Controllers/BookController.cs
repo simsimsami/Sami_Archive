@@ -17,7 +17,7 @@ namespace Sami_Archive.Controllers
             bookRepository = repo;
         }
 
-        public ViewResult Index(int bookPage = 1, string? title = null)
+        public ViewResult Index(int page = 1, string? title = null)
         {
             var query = bookRepository.Books
                 .Include(b => b.Genres)
@@ -28,7 +28,7 @@ namespace Sami_Archive.Controllers
 
             var books = query
                 .OrderBy(b => b.BookID)
-                .Skip((bookPage - 1) * PageSize)
+                .Skip((page - 1) * PageSize)
                 .Take(PageSize);
 
 
@@ -37,7 +37,7 @@ namespace Sami_Archive.Controllers
                 Books = books,
                 PagingInfo = new PagingInfo
                 {
-                    CurrentPage = bookPage,
+                    CurrentPage = page,
                     ItemsPerPage = PageSize,
                     TotalItems = totalItems
                 },

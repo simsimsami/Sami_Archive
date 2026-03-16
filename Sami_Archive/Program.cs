@@ -13,6 +13,7 @@ builder.Services.AddDbContext<StoreDbContext>(opts =>
 });
 
 builder.Services.AddScoped<IBookRepository, EFBookRepository>();
+builder.Services.AddScoped<IGenreRepository, EFGenreRepository>();
 
 var app = builder.Build();
 
@@ -23,17 +24,14 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.MapControllerRoute("pagination",
+app.MapControllerRoute("book",
     "Books/Page{bookPage}",
-    new { Controller = "Book", action = "Get" });
+    new { Controller = "BookController", action = "Get" });
 
-app.MapControllerRoute("genre",
-    "Books/{genre}/Page{bookPage}",
-    new { Controller = "Home", action = "Get" });
+app.MapControllerRoute("genre", 
+    "Genres/Page{genrePage}", 
+    new { Controller = "GenreController", action = "Get " });
 
-app.MapControllerRoute("title",
-    "{title}",
-    new { Controller = "Home", action = "Get" });
 
 app.MapDefaultControllerRoute();
 

@@ -38,6 +38,11 @@ namespace Sami_Archive.Tests
                 .Options;
             return new StoreDbContext( options );
         }
+        private GenreController CreateController(StoreDbContext context)
+        {
+            var repo = new EFGenreRepository(context);
+            return new GenreController(context, repo);
+        }
 
         [Fact]
         public void Can_Send_Pagination_View_Model()
@@ -95,6 +100,30 @@ namespace Sami_Archive.Tests
 
             Assert.Equal(3, genreArray.Length);
             Assert.NotNull(genreArray);
+        }
+        
+        [Fact]
+        public async Task CreateGenre_WhenValid()
+        {
+            // Arrange
+            var context = CreateDBContext();
+            GenreController controller = CreateController(context);
+
+            Genre newGenre = new Genre
+            {
+                GenreID = 1,
+                GenreTitle = "Test Genre",
+            };
+
+            // Act
+            var result = await controller.Create(newGenre);
+
+            // Assert
+            var redirect = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Index", redirect.ActionName);
+
+            var saved = await context.Genres.FirstAsync();
+            Assert.Equal("Test Genre", saved.GenreTitle);
         }
     }
 }

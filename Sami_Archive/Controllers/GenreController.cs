@@ -16,7 +16,7 @@ namespace Sami_Archive.Controllers
             _context = context;
             genreRepository = repo;
         }
-        public ViewResult Index(int genrePage = 1, string? title = null)
+        public ViewResult Index(int page = 1, string? title = null)
         {
             var query = genreRepository.Genres
                 .Where(g => title == null || g.GenreTitle == title);
@@ -25,7 +25,7 @@ namespace Sami_Archive.Controllers
 
             var genres = query
                 .OrderBy(g => g.GenreTitle)
-                .Skip((genrePage - 1) * PageSize)
+                .Skip((page - 1) * PageSize)
                 .Take(PageSize);
 
             return View(new GenresListViewModels
@@ -33,7 +33,7 @@ namespace Sami_Archive.Controllers
                 Genres = genres,
                 PagingInfo = new PagingInfo
                 {
-                    CurrentPage = genrePage,
+                    CurrentPage = page,
                     ItemsPerPage = PageSize,
                     TotalItems = totalItems
                 },
