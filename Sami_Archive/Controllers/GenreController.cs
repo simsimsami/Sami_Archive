@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Sami_Archive.Models;
 using Sami_Archive.Models.ViewModels;
+using System.Net;
 
 namespace Sami_Archive.Controllers
 {
@@ -81,13 +82,46 @@ namespace Sami_Archive.Controllers
                 try
                 {
                     await genreRepository.UpdateGenreAsync(genre);
-                    return RedirectToAction("Genre", "Genre");
+                    return RedirectToAction("Index", "Genre");
                 }
                 catch (Exception)
                 {
                     ModelState.AddModelError("", "Unable to edit genre");
                 }
                 return RedirectToAction("Index", "Home");
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteForm(long? GenreID)
+        {
+            if (GenreID == null)
+            {
+                return NotFound();
+            }
+            var genre = _context.Genres.Find(GenreID);
+            if (genre == null) return NotFound();
+            return View(genre);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteGenre(long GenreID)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var genre = await _context.Genres.FindAsync(GenreID);
+                    if (genre == null) return NotFound($"Book with ID = {GenreID} not found");
+
+                    await genreRepository.DeleteGenreAsync(GenreID);
+                    return RedirectToAction("Index", "Genre");
+                }
+                catch (Exception)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Error deleting data");
+                }
             }
             return RedirectToAction("Index", "Home");
         }

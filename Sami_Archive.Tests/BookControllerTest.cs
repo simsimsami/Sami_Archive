@@ -194,12 +194,12 @@ namespace Sami_Archive.Tests
             };
 
             // Act
-            var result = await controller.Create(newBook);
-            var deleteResult = await controller.DeleteBook(1);
-            var listResult = controller.Index(1);
+            var create = await controller.Create(newBook);
+            var delete = await controller.DeleteBook(1);
+            var viewResult = controller.Index(1);
 
             // Assert
-            var view = Assert.IsType<ViewResult>(listResult);
+            var view = Assert.IsType<ViewResult>(viewResult);
             var model = Assert.IsType<BooksListViewModels>(view.Model);
 
             Assert.Empty(model.Books);

@@ -64,14 +64,14 @@ namespace Sami_Archive.Controllers
                 try
                 {
                     await bookRepository.UpdateBookAsync(book);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Book");
                 }
                 catch (DbUpdateConcurrencyException /* ex */)
                 {
                     ModelState.AddModelError("", "Unable to save changes... ");
                 }
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Book");
         }
 
         public ViewResult Create() => View();
@@ -100,6 +100,10 @@ namespace Sami_Archive.Controllers
         [HttpGet]
         public async Task<IActionResult> DeleteForm(long? BookID)
         {
+            if (BookID == null)
+            {
+                return NotFound();
+            }
             var book = _context.Books.Find(BookID);
             if (book == null) return NotFound();
             return View(book);
@@ -108,21 +112,22 @@ namespace Sami_Archive.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteBook(long BookID)
         {
-            try
+            if (ModelState.IsValid)
             {
-                var book = await _context.Books.FindAsync(BookID);
-                if (book == null)
+                try
                 {
-                    return NotFound($"Book with ID = {BookID} not found");
+                    var book = await _context.Books.FindAsync(BookID);
+                    if (book == null) return NotFound($"Book with ID = {BookID} not found");
+                    
+                    await bookRepository.DeleteBookAsync(BookID);
+                    return RedirectToAction("Index", "Book");
                 }
-                await bookRepository.DeleteBookAsync(BookID);
-
-                return RedirectToAction("Index", "Home");
+                catch (Exception)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Error deleting data");
+                }
             }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error deleting data");
-            }
+            return RedirectToAction("Index", "Home");
         }
     }
 }

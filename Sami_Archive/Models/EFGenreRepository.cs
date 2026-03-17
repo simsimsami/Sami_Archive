@@ -18,7 +18,6 @@ namespace Sami_Archive.Models
         public async Task UpdateGenreAsync(Genre genre)
         {
             var currentGenre = await _context.Genres
-                .Include(g => g.GenreTitle)
                 .FirstOrDefaultAsync(g => g.GenreID == genre.GenreID);
 
             if (currentGenre == null) { return; }

@@ -112,7 +112,7 @@ namespace Sami_Archive.Tests
             Genre newGenre = new Genre
             {
                 GenreID = 1,
-                GenreTitle = "Test Genre",
+                GenreTitle = "Test Genre 1",
             };
 
             // Act
@@ -123,7 +123,63 @@ namespace Sami_Archive.Tests
             Assert.Equal("Index", redirect.ActionName);
 
             var saved = await context.Genres.FirstAsync();
-            Assert.Equal("Test Genre", saved.GenreTitle);
+            Assert.Equal("Test Genre 1", saved.GenreTitle);
+        }
+
+        [Fact]
+        public async Task UpdateGenre_WhenValid()
+        {
+            // Arrange
+            var context = CreateDBContext();
+            GenreController controller = CreateController(context);
+
+            Genre genre = new Genre
+            {
+                GenreID = 1,
+                GenreTitle = "Test Genre 1"
+            };
+
+            Genre newGenre = new Genre
+            {
+                GenreID = 1,
+                GenreTitle = "Test Genre 2"
+            };
+
+            // Act
+            var create = await controller.Create(genre);
+            var result = await controller.Edit(1, newGenre);
+
+            // Assert
+            var redirect = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Index", redirect.ActionName);
+
+            var saved = await context.Genres.FirstAsync();
+            Assert.Equal("Test Genre 2", saved.GenreTitle);
+        }
+
+        [Fact]
+        public async Task DeleteGenre_WhenValid()
+        {
+            // Arrange
+            var context = CreateDBContext();
+            var controller = CreateController(context);
+            
+            Genre genre = new Genre
+            {
+                GenreID = 1,
+                GenreTitle = "Test Genre 1"
+            };
+
+            // Act
+            var create = await controller.Create(genre);
+            var delete = await controller.DeleteGenre(1);
+            var viewResult = controller.Index(1);
+
+            // Assert
+            var view = Assert.IsType<ViewResult>(viewResult);
+            var model = Assert.IsType<GenresListViewModels>(view.Model);
+            
+            Assert.Empty(model.Genres);
         }
     }
 }
