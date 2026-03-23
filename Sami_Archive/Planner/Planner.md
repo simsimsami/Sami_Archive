@@ -12,7 +12,6 @@
 
 ## Genre Book and Author
 - Implement CRUD for author [ ] 
-
-- To do for genre [Short term]
-	- Implement create route [x]
-	- test method for create [ ]
+	- Create method
+	- Test create method
+	- 

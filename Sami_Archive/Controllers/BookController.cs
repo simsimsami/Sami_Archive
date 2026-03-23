@@ -45,6 +45,8 @@ namespace Sami_Archive.Controllers
             });
         }
 
+        public ViewResult Create() => View();
+        
         [HttpGet]
         public async Task<IActionResult> Edit(long? BookID)
         {
@@ -73,8 +75,6 @@ namespace Sami_Archive.Controllers
             }
             return RedirectToAction("Index", "Book");
         }
-
-        public ViewResult Create() => View();
 
         [HttpPost]
         public async Task<IActionResult> Create(Book book)

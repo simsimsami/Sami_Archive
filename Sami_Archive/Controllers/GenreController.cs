@@ -41,7 +41,6 @@ namespace Sami_Archive.Controllers
                 GenreFilter = title
             });
         }
-
         public ViewResult Create() => View();
 
         [HttpPost]
