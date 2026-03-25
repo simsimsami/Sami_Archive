@@ -46,20 +46,16 @@ namespace Sami_Archive.Controllers
         }
 
         public ViewResult Create() => View();
-        
+
         [HttpGet]
-        public async Task<IActionResult> Edit(long? BookID)
+        public async Task<IActionResult> Edit(long BookID)
         {
-            if (BookID == null)
-            {
-                return NotFound();
-            }
             var book = await _context.Books.FirstOrDefaultAsync(b => b.BookID == BookID);
             return View(book);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(long? BookID, [Bind("BookID,Title,Description,Genre")] Book book)
+        public async Task<IActionResult> Edit(long BookID, [Bind("BookID,Title,Description,Genre")] Book book)
         {
             if (ModelState.IsValid)
             {
@@ -68,45 +64,54 @@ namespace Sami_Archive.Controllers
                     await bookRepository.UpdateBookAsync(book);
                     return RedirectToAction("Index", "Book");
                 }
-                catch (DbUpdateConcurrencyException /* ex */)
+                catch (Exception e)
                 {
-                    ModelState.AddModelError("", "Unable to save changes... ");
+                    Console.WriteLine(e.Message);
+                    throw;
                 }
             }
+            ModelState.AddModelError("", "Unable to save changes... ");
             return RedirectToAction("Index", "Book");
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(Book book)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View(book);
+                try
+                {
+                    await bookRepository.AddBookAsync(book);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    throw;
+                }
             }
-            try
-            {
-
-                await bookRepository.AddBookAsync(book);
-                return RedirectToAction("Index");
-
-            }
-            catch (Exception)
-            {
-                ModelState.AddModelError("", "Unable to create book");
-                return View(book);
-            }
+            ModelState.AddModelError("", "Error in Book ModelState");
+            return View(book);
         }
 
         [HttpGet]
-        public async Task<IActionResult> DeleteForm(long? BookID)
+        public async Task<IActionResult> DeleteForm(long BookID)
         {
-            if (BookID == null)
+            if (ModelState.IsValid)
             {
-                return NotFound();
+                try
+                {
+                    await bookRepository.DeleteBookAsync(BookID);
+                    return RedirectToAction("Index", "Book");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    throw;
+                }
             }
-            var book = _context.Books.Find(BookID);
-            if (book == null) return NotFound();
-            return View(book);
+            ModelState.AddModelError("", "Error in Book ModelState");
+            return RedirectToAction("Index", "Book");
         }
 
         [HttpPost]
@@ -118,15 +123,17 @@ namespace Sami_Archive.Controllers
                 {
                     var book = await _context.Books.FindAsync(BookID);
                     if (book == null) return NotFound($"Book with ID = {BookID} not found");
-                    
+
                     await bookRepository.DeleteBookAsync(BookID);
                     return RedirectToAction("Index", "Book");
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Error deleting data");
+                    Console.WriteLine(e.Message);
+                    throw;
                 }
             }
+            ModelState.AddModelError("", "Unable to save changes... ");
             return RedirectToAction("Index", "Home");
         }
     }

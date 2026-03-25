@@ -65,9 +65,8 @@ namespace Sami_Archive.Tests
             Assert.Equal(2, pageInfo.ItemsPerPage);
             Assert.Equal(5, pageInfo.TotalItems);
             Assert.Equal(3, pageInfo.TotalPages);
-
         }
-        
+
         [Fact]
         public void Can_Paginate()
         {
@@ -85,7 +84,7 @@ namespace Sami_Archive.Tests
             Assert.Equal("B2", bookArray[1].BookTitle);
             Assert.NotEqual("B3", bookArray[1].BookTitle);
         }
-        
+
         [Fact]
         public void Can_Access_Repository()
         {
@@ -101,7 +100,6 @@ namespace Sami_Archive.Tests
             Book[] bookArray = result.Books.ToArray();
             Assert.Equal(2, bookArray.Length);
             Assert.NotNull(bookArray);
-
         }
         
         [Fact]
@@ -113,8 +111,6 @@ namespace Sami_Archive.Tests
             // Arrange - setup controller
             BookController controller = new BookController(null, mock.Object);
             controller.PageSize = 3;
-
-            // Fix filtering system
         }
 
         [Fact]
@@ -141,6 +137,8 @@ namespace Sami_Archive.Tests
 
             var saved = await context.Books.FirstAsync();
             Assert.Equal("Test Title", saved.BookTitle);
+
+            return;
         }
 
         [Fact]
@@ -175,6 +173,8 @@ namespace Sami_Archive.Tests
             Assert.Equal("Index", redirect.ActionName);
             var saved = await context.Books.FirstAsync();
             Assert.Equal("Test Title 2", saved.BookTitle);
+
+            return;
         }
 
         [Fact]
@@ -203,6 +203,8 @@ namespace Sami_Archive.Tests
             var model = Assert.IsType<BooksListViewModels>(view.Model);
 
             Assert.Empty(model.Books);
+
+            return;
         }
     }
 }

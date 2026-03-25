@@ -1,5 +1,9 @@
 ﻿@model GenresListViewModels
 
+<div>
+    <a class="btn btn-success btn-sm pull-right text-black" asp-controller="Genre" asp-action="Create">Create Genre</a>
+</div>
+
 @foreach (var p in Model?.Genres ?? Enumerable.Empty<Genre>())
 {
     <partial name="GenreSummary" model="p" />

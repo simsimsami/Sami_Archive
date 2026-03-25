@@ -32,6 +32,7 @@ namespace Sami_Archive.Models
         public async Task DeleteAuthorAsync(long AuthorID)
         {
             var author = await _context.Authors.FindAsync(AuthorID);
+            if (author == null) { return; }
             _context.Remove(author);
             await _context.SaveChangesAsync();
         }

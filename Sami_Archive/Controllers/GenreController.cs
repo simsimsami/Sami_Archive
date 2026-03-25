@@ -53,28 +53,25 @@ namespace Sami_Archive.Controllers
                     await genreRepository.AddGenreAsync(genre);
                     return RedirectToAction("Index", "Genre");
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    ModelState.AddModelError("", "Unable to create genre");
-                    return RedirectToAction("Index", "Genre");
+                    Console.WriteLine(e.Message);
+                    throw;
                 }
             }
+            ModelState.AddModelError("", "Unable to create genre");
             return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit(long? GenreID)
+        public async Task<IActionResult> Edit(long GenreID)
         {
-            if (GenreID == null)
-            {
-                return NotFound();
-            }
             var genre = await _context.Genres.FirstOrDefaultAsync(g => g.GenreID == GenreID);
             return View(genre);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(long? GenreID, [Bind("GenreID,GenreTitle")] Genre genre)
+        public async Task<IActionResult> Edit(long GenreID, [Bind("GenreID,GenreTitle")] Genre genre)
         {
             if (ModelState.IsValid)
             {
@@ -83,25 +80,34 @@ namespace Sami_Archive.Controllers
                     await genreRepository.UpdateGenreAsync(genre);
                     return RedirectToAction("Index", "Genre");
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    ModelState.AddModelError("", "Unable to edit genre");
+                    Console.WriteLine(e.Message);
+                    throw;
                 }
-                return RedirectToAction("Index", "Home");
             }
+            ModelState.AddModelError("", "Unable to edit genre");
             return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
-        public async Task<IActionResult> DeleteForm(long? GenreID)
+        public async Task<IActionResult> DeleteForm(long GenreID)
         {
-            if (GenreID == null)
+            if (ModelState.IsValid)
             {
-                return NotFound();
+                try
+                {
+                    await genreRepository.DeleteGenreAsync(GenreID);
+                    return RedirectToAction("Index", "Genre");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    throw;
+                }
             }
-            var genre = _context.Genres.Find(GenreID);
-            if (genre == null) return NotFound();
-            return View(genre);
+            ModelState.AddModelError("","Error in delete genre");
+            return RedirectToAction("Index", "Genre");
         }
 
         [HttpPost]
@@ -112,7 +118,6 @@ namespace Sami_Archive.Controllers
                 try
                 {
                     var genre = await _context.Genres.FindAsync(GenreID);
-                    if (genre == null) return NotFound($"Book with ID = {GenreID} not found");
 
                     await genreRepository.DeleteGenreAsync(GenreID);
                     return RedirectToAction("Index", "Genre");

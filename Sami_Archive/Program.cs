@@ -14,6 +14,7 @@ builder.Services.AddDbContext<StoreDbContext>(opts =>
 
 builder.Services.AddScoped<IBookRepository, EFBookRepository>();
 builder.Services.AddScoped<IGenreRepository, EFGenreRepository>();
+builder.Services.AddScoped<IAuthorRepository, EFAuthorRepository>();
 
 var app = builder.Build();
 

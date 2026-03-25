@@ -30,6 +30,7 @@ namespace Sami_Archive.Models
         public async Task DeleteGenreAsync(long GenreID)
         {
             var genre = await _context.Genres.FindAsync(GenreID);
+            if (genre == null) { return ; }
             _context.Genres.Remove(genre);
             await _context.SaveChangesAsync();
         }

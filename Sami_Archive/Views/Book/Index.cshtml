@@ -1,5 +1,9 @@
 ﻿@model BooksListViewModels
 
+<div>
+    <a class="btn btn-success btn-sm pull-right text-black" asp-controller="Book" asp-action="Create">Create Book</a>
+</div>
+
 @foreach (var p in Model?.Books ?? Enumerable.Empty<Book>())
 {
     <partial name="BookSummary" model="p" />
