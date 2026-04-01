@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Sami_Archive.Models.ViewModels;
+using System.Linq.Expressions;
 
 namespace Sami_Archive.Models
 {
@@ -10,9 +12,43 @@ namespace Sami_Archive.Models
             _context = ctx;
         }
         public IQueryable<Book> Books => _context.Books;
-        public async Task AddBookAsync(Book book)
+        public async Task AddBookAsync(CreateBookViewModel viewModel)
         {
+            var book = new Book
+            {
+                BookTitle = viewModel.BookTitle,
+                BookDescription = viewModel.BookDescription,
+            };
+
             _context.Books.Add(book);
+            await _context.SaveChangesAsync();
+
+            if (viewModel.SelectedGenreId?.Any() == true)
+            {
+                var selectedGenreIdsLong = viewModel.SelectedGenreId.Select(i => (long)i).ToList();
+                var genres = await _context.Genres
+                    .Where(g => selectedGenreIdsLong.Contains(g.GenreID))
+                    .ToListAsync();
+
+                foreach(var g in genres)
+                {
+                    book.Genres.Add(g);
+                }
+            }
+
+            if (viewModel.SelectedAuthorId?.Any() == true)
+            {
+                var selectedAuthorIdsLong = viewModel.SelectedAuthorId.Select(i => (long)i).ToList();
+                var authors = await _context.Authors
+                    .Where(a => selectedAuthorIdsLong.Contains(a.AuthorID))
+                    .ToListAsync();
+
+                foreach (var a in authors)
+                {
+                    book.Authors.Add(a);
+                }
+            }
+
             await _context.SaveChangesAsync();
         }
         public async Task UpdateBookAsync(Book book)

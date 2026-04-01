@@ -10,9 +10,17 @@
 
     <div class="card-text p-1">
 
-        @foreach (var item in Model?.Genres)
+        @foreach (var item in Model.Genres)
         {
             @item.GenreTitle
+        }
+    </div>
+
+    <div class="card-text p-1">
+
+        @foreach (var item in Model.Authors)
+        {
+            @item.AuthorName
         }
     </div>
 

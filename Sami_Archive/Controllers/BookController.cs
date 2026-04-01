@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Sami_Archive.Models;
 using Sami_Archive.Models.ViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Sami_Archive.Controllers
 {
@@ -11,13 +12,14 @@ namespace Sami_Archive.Controllers
         private readonly StoreDbContext _context;
         private IBookRepository bookRepository;
 
+
         public BookController(StoreDbContext context, IBookRepository repo)
         {
             _context = context;
             bookRepository = repo;
         }
 
-        public ViewResult Index(int page = 1, string? title = null)
+        public IActionResult Index(int page = 1, string? title = null)
         {
             var query = bookRepository.Books
                 .Include(b => b.Genres)
@@ -45,7 +47,41 @@ namespace Sami_Archive.Controllers
             });
         }
 
-        public ViewResult Create() => View();
+        public IActionResult Create() {
+
+            var CreateBookVM = new CreateBookViewModel
+            {
+                Authors = _context.Authors
+                .Select(a => new KeyValuePair<long, string>(a.AuthorID, a.AuthorName))
+                .ToList(),
+
+                Genres = _context.Genres
+                .Select(g => new KeyValuePair<long, string>(g.GenreID, g.GenreTitle))
+                .ToList()
+            };
+
+            return View(CreateBookVM); 
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateBookViewModel book)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await bookRepository.AddBookAsync(book);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    throw;
+                }
+            }
+            ModelState.AddModelError("", "Error in Book ModelState");
+            return View(book);
+        }
 
         [HttpGet]
         public async Task<IActionResult> Edit(long BookID)
@@ -74,25 +110,6 @@ namespace Sami_Archive.Controllers
             return RedirectToAction("Index", "Book");
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create(Book book)
-        {
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    await bookRepository.AddBookAsync(book);
-                    return RedirectToAction("Index");
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                    throw;
-                }
-            }
-            ModelState.AddModelError("", "Error in Book ModelState");
-            return View(book);
-        }
 
         [HttpGet]
         public async Task<IActionResult> DeleteForm(long BookID)

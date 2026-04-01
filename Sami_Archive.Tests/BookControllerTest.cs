@@ -22,7 +22,7 @@ namespace Sami_Archive.Tests
 
             mock.Setup(m => m.Books).Returns((new List<Book>
             {
-                new Book { BookID = 1, BookTitle = "B1", BookDescription = "D1", Genres = { new Genre { GenreID = 1, GenreTitle = "G1" } } },
+                new Book { BookID = 1, BookTitle = "B1", BookDescription = "D1", Genres = { new Genre { GenreID = 1, GenreTitle = "G1" }, new Genre { GenreID = 2, GenreTitle = "G2" } } },
                 new Book { BookID = 2, BookTitle = "B2", BookDescription = "D2", Genres = { new Genre { GenreID = 2, GenreTitle = "G2" } } },
                 new Book { BookID = 3, BookTitle = "B3", BookDescription = "D3", Genres = { new Genre { GenreID = 3, GenreTitle = "G3" } } },
                 new Book { BookID = 4, BookTitle = "B4", BookDescription = "D4", Genres = { new Genre { GenreID = 4, GenreTitle = "G4" } } },

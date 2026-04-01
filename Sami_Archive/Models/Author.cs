@@ -2,7 +2,7 @@
 {
     public class Author
     {
-        public long? AuthorID { get; set; }
+        public long AuthorID { get; set; }
         public string AuthorName { get; set; } = String.Empty;
         public ICollection<Book> Books { get; } = new List<Book>();
     }
