@@ -11,7 +11,6 @@ using Sami_Archive.Controllers;
 using Sami_Archive.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.InMemory;
-using System.Reflection.Metadata.Ecma335;
 
 namespace Sami_Archive.Tests
 {
@@ -39,6 +38,12 @@ namespace Sami_Archive.Tests
                 .Options;
             return new StoreDbContext(options);
         }
+        private BookController CreateController(StoreDbContext context)
+        {
+            var repo = new EFBookRepository(context);
+            return new BookController(context, repo);
+        }
+        
         [Fact]
         public void Can_Send_Pagination_View_Model()
         {
@@ -49,7 +54,7 @@ namespace Sami_Archive.Tests
             BookController controller = new BookController(null, mock.Object) { PageSize = 2 };
 
             // Act - declare a view model
-            BooksListViewModels result = controller.List(1)?.ViewData.Model as BooksListViewModels ?? new();
+            BooksListViewModels result = controller.Index(1)?.ViewData.Model as BooksListViewModels ?? new();
 
             // Assert the pagination view model
 
@@ -60,8 +65,8 @@ namespace Sami_Archive.Tests
             Assert.Equal(2, pageInfo.ItemsPerPage);
             Assert.Equal(5, pageInfo.TotalItems);
             Assert.Equal(3, pageInfo.TotalPages);
-
         }
+
         [Fact]
         public void Can_Paginate()
         {
@@ -71,7 +76,7 @@ namespace Sami_Archive.Tests
             BookController controller = new BookController(null, mock.Object) { PageSize = 3 };
 
             // Act - no filters, looking at the second page
-            BooksListViewModels result = controller.List(1)?.ViewData.Model as BooksListViewModels ?? new();
+            BooksListViewModels result = controller.Index(1)?.ViewData.Model as BooksListViewModels ?? new();
 
             Book[] bookArray = result.Books.ToArray();
             Assert.True(bookArray.Length == 3);
@@ -89,15 +94,14 @@ namespace Sami_Archive.Tests
             BookController controller = new BookController(null, mock.Object) { PageSize = 3 };
 
             // Act - getting access to the repo
-            BooksListViewModels result = controller.List(2)?.ViewData.Model as BooksListViewModels ?? new();
+            BooksListViewModels result = controller.Index(2)?.ViewData.Model as BooksListViewModels ?? new();
 
             // Assert - checking if the controller can access the bookRepository
             Book[] bookArray = result.Books.ToArray();
-            Assert.True(bookArray.Length == 2);
+            Assert.Equal(2, bookArray.Length);
             Assert.NotNull(bookArray);
-
         }
-
+        
         [Fact]
         public void Can_Filter_Books()
         {
@@ -107,14 +111,6 @@ namespace Sami_Archive.Tests
             // Arrange - setup controller
             BookController controller = new BookController(null, mock.Object);
             controller.PageSize = 3;
-
-            // Fix filtering system
-        }
-
-        private BookController CreateController(StoreDbContext context)
-        {
-            var repo = new EFBookRepository(context);
-            return new BookController(context, repo);
         }
 
         [Fact]
@@ -141,6 +137,8 @@ namespace Sami_Archive.Tests
 
             var saved = await context.Books.FirstAsync();
             Assert.Equal("Test Title", saved.BookTitle);
+
+            return;
         }
 
         [Fact]
@@ -175,6 +173,8 @@ namespace Sami_Archive.Tests
             Assert.Equal("Index", redirect.ActionName);
             var saved = await context.Books.FirstAsync();
             Assert.Equal("Test Title 2", saved.BookTitle);
+
+            return;
         }
 
         [Fact]
@@ -194,15 +194,17 @@ namespace Sami_Archive.Tests
             };
 
             // Act
-            var result = await controller.Create(newBook);
-            var deleteResult = await controller.DeleteBook(1);
-            var listResult = controller.List(1);
+            var create = await controller.Create(newBook);
+            var delete = await controller.DeleteBook(1);
+            var viewResult = controller.Index(1);
 
             // Assert
-            var view = Assert.IsType<ViewResult>(listResult);
+            var view = Assert.IsType<ViewResult>(viewResult);
             var model = Assert.IsType<BooksListViewModels>(view.Model);
 
             Assert.Empty(model.Books);
+
+            return;
         }
     }
 }

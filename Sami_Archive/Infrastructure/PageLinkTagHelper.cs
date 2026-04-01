@@ -33,7 +33,7 @@ namespace Sami_Archive.Infrastructure
                 for (int i = 1; i <= PageModel.TotalPages; i++)
                 {
                     TagBuilder tag = new TagBuilder("a");
-                    tag.Attributes["href"] = urlHelper.Action(PageAction, new { bookPage = i });
+                    tag.Attributes["href"] = urlHelper.Action(PageAction, new { page = i });
                     if (PageClassesEnabled)
                     {
                         tag.AddCssClass(PageClass);

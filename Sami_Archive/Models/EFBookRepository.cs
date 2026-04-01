@@ -48,7 +48,8 @@ namespace Sami_Archive.Models
         public async Task DeleteBookAsync(long BookID)
         {
             var book = await _context.Books.FindAsync(BookID);
-            _context.Books.Remove(book);
+            if (book == null) { return; }
+            _context.Remove(book);
             await _context.SaveChangesAsync();
         }
     }

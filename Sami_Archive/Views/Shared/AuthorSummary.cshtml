@@ -1,0 +1,21 @@
+﻿@model Author
+
+
+<div class="card card-outline-primary m-1 p-1">
+    <div class="bg-faded p-1">
+        @Model?.AuthorName
+    </div>
+
+    <div>
+        <a asp-controller="Author"
+           asp-action="Edit"
+           asp-route-AuthorID="@Model?.AuthorID"
+           class="btn btn-success btn-sm pull-right">Edit</a>
+    </div>
+    <div>
+        <a asp-controller="Author"
+           asp-action="DeleteForm"
+           asp-route-AuthorID="@Model?.AuthorID"
+           class="btn btn-danger btn-sm pull-right">Delete</a>
+    </div>
+</div>

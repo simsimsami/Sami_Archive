@@ -18,7 +18,6 @@ namespace Sami_Archive.Models
         public async Task UpdateGenreAsync(Genre genre)
         {
             var currentGenre = await _context.Genres
-                .Include(g => g.GenreTitle)
                 .FirstOrDefaultAsync(g => g.GenreID == genre.GenreID);
 
             if (currentGenre == null) { return; }
@@ -31,6 +30,7 @@ namespace Sami_Archive.Models
         public async Task DeleteGenreAsync(long GenreID)
         {
             var genre = await _context.Genres.FindAsync(GenreID);
+            if (genre == null) { return ; }
             _context.Genres.Remove(genre);
             await _context.SaveChangesAsync();
         }

@@ -1,0 +1,11 @@
+﻿@model Genre
+
+<form asp-action="DeleteGenre" asp-route-BookID="@Model?.GenreID" method="post" class="border border-black p-3 mb-3 col-6">
+    <input asp-for="GenreID" type="hidden" />
+    <div class="form-group">
+        <div class="mb-3">
+            <a asp-for="GenreTitle" class="form-label">@Model?.GenreTitle</a>
+        </div>
+    </div>
+    <button class="btn btn-danger">Confirm?</button>
+</form>
