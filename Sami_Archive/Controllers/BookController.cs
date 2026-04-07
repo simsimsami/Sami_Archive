@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Sami_Archive.Models;
 using Sami_Archive.Models.ViewModels;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Sami_Archive.Controllers
 {

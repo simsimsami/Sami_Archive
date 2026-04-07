@@ -23,22 +23,22 @@ namespace Sami_Archive.Models
             _context.Books.Add(book);
             await _context.SaveChangesAsync();
 
-            if (viewModel.SelectedGenreId?.Any() == true)
+            if (viewModel.SelectedGenres?.Any() == true)
             {
-                var selectedGenreIdsLong = viewModel.SelectedGenreId.Select(i => (long)i).ToList();
+                var selectedGenreIdsLong = viewModel.SelectedGenres.Select(i => (long)i).ToList();
                 var genres = await _context.Genres
                     .Where(g => selectedGenreIdsLong.Contains(g.GenreID))
                     .ToListAsync();
 
-                foreach(var g in genres)
+                foreach(var item in genres)
                 {
-                    book.Genres.Add(g);
+                    book.Genres.Add(item);
                 }
             }
 
-            if (viewModel.SelectedAuthorId?.Any() == true)
+            if (viewModel.SelectedAuthors?.Any() == true)
             {
-                var selectedAuthorIdsLong = viewModel.SelectedAuthorId.Select(i => (long)i).ToList();
+                var selectedAuthorIdsLong = viewModel.SelectedAuthors.Select(i => (long)i).ToList();
                 var authors = await _context.Authors
                     .Where(a => selectedAuthorIdsLong.Contains(a.AuthorID))
                     .ToListAsync();

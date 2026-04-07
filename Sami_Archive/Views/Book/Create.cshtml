@@ -8,20 +8,18 @@
         </div>
     </div>
     <div class="form-group">
-        <label asp-for="SelectedGenreId">Select Genre</label>
-        <select asp-for="SelectedGenreId"
-                asp-items="@(new MultiSelectList(Model.Genres, "Key", "Value"))"
-                class="form-control"
-                multiple>
+        <label asp-for="SelectedGenres">Select Genre</label>
+        <select asp-for="SelectedGenres"
+                asp-items="@(new SelectList(Model.Genres, "Key", "Value"))"
+                class="form-control">
         </select>
 
     </div>
     <div class="form-group">
-        <label asp-for="SelectedAuthorId">Select Author</label>
-        <select asp-for="SelectedAuthorId"
-                asp-items="@(new MultiSelectList(Model.Authors, "Key", "Value"))"
-                class="form-control"
-                multiple>
+        <label asp-for="SelectedAuthors">Select Author</label>
+        <select asp-for="SelectedAuthors"
+                asp-items="@(new SelectList(Model.Authors, "Key", "Value"))"
+                class="form-control">
         </select>
     </div>
     <div class="form-group">

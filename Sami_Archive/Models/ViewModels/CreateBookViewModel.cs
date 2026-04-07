@@ -10,8 +10,8 @@ namespace Sami_Archive.Models.ViewModels
 
         public required List<KeyValuePair<long, string>> Authors { get; set; } = new();
 
-        public IEnumerable<long> SelectedGenreId { get; set; } = Array.Empty<long>();
+        public List<long> SelectedGenres { get; set; } = new();
 
-        public IEnumerable<long> SelectedAuthorId { get; set; } = Array.Empty<long>();
+        public List<long> SelectedAuthors { get; set; } = new();
     }
 }

@@ -1,21 +1,35 @@
 ﻿@model Genre
 
 
+<table class="table tabletable-striped table-dark">
+    <tbody>
+        <tr>
+            <td>@Model?.GenreTitle</td>
+            <td asp-controller="Genre"
+               asp-action="Edit"
+               asp-route-GenreID="@Model?.GenreID"
+               class="btn btn-success btn-sm pull-right">Edit</td>
+            <td asp-controller="Genre"
+               asp-action="DeleteForm"
+               asp-route-GenreID="@Model?.GenreID"
+               class="btn btn-danger btn-sm pull-right">Delete</td>
+        </tr>
+    </tbody>
+</table>
+
+
 <div class="card card-outline-primary m-1 p-1">
-    <div class="bg-faded p-1">
+    <div class="card-text p-1 badge text-bg-primary">
         @Model?.GenreTitle
     </div>
-</div>
-
-<div>
-    <a asp-controller="Genre"
-    asp-action="Edit"
-    asp-route-GenreID="@Model?.GenreID"
-    class="btn btn-success btn-sm pull-right">Edit</a>
-</div>
-<div>
-    <a asp-controller="Genre"
-       asp-action="DeleteForm"
-       asp-route-GenreID="@Model?.GenreID"
-       class="btn btn-danger btn-sm pull-right">Delete</a>
+    <div>
+        <a asp-controller="Genre"
+           asp-action="Edit"
+           asp-route-GenreID="@Model?.GenreID"
+           class="btn btn-success btn-sm pull-right">Edit</a>
+        <a asp-controller="Genre"
+           asp-action="DeleteForm"
+           asp-route-GenreID="@Model?.GenreID"
+           class="btn btn-danger btn-sm pull-right">Delete</a>
+    </div>
 </div>

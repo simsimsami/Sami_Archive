@@ -118,6 +118,7 @@ namespace Sami_Archive.Controllers
                 try
                 {
                     var genre = await _context.Genres.FindAsync(GenreID);
+                    if (genre == null) return NotFound($"Genre with ID = {GenreID} not found");
 
                     await genreRepository.DeleteGenreAsync(GenreID);
                     return RedirectToAction("Index", "Genre");

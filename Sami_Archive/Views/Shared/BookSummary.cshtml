@@ -1,37 +1,35 @@
 ﻿@model Book
 
-
 <div class="card card-outline-primary m-1 p-1">
     <div class="bg-faded p-1">
         <h4>
             @Model?.BookTitle
         </h4>
     </div>
-
-    <div class="card-text p-1">
+    <div class="card-text p-1 border border-black">
 
         @foreach (var item in Model.Genres)
         {
-            @item.GenreTitle
+            <div class="badge text-bg-primary">
+                @item.GenreTitle
+            </div>
         }
     </div>
-
-    <div class="card-text p-1">
+    <div class="card-text p-1 border border-black">
 
         @foreach (var item in Model.Authors)
         {
-            @item.AuthorName
+            <div class="badge text-bg-info">
+                @item.AuthorName
+            </div>
         }
     </div>
-
     <div class="card-text p-1">@Model?.BookDescription</div>
     <div>
         <a asp-controller="Book"
            asp-action="Edit"
            asp-route-BookID="@Model?.BookID"
            class="btn btn-success btn-sm pull-right">Edit</a>
-    </div>
-    <div>
         <a asp-controller="Book"
            asp-action="DeleteForm"
            asp-route-BookID="@Model?.BookID"
