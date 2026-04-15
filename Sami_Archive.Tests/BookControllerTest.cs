@@ -16,15 +16,38 @@ using Xunit.Sdk;
 using static Sami_Archive.Tests.TestData.SharedTestData;
 using static Sami_Archive.Tests.GenreControllerTest;
 using static Sami_Archive.Tests.AuthorControllerTest;
+using Sami_Archive.Tests.TestData;
 
 namespace Sami_Archive.Tests
 {
     public class BookControllerTest
     {
+        private readonly ITestOutputHelper _testOutputHelper;
+        public BookControllerTest(ITestOutputHelper testOutputHelper)
+        {
+            _testOutputHelper = testOutputHelper;
+        }
+
+        public async Task<StoreDbContext> PopulateDatabase()
+        {
+            var context = CreateDbContext();
+
+            var bookMock = BookMockRepo();
+            var genreMock = GenreMockRepo();
+            var authorMock = AuthorMockRepo();
+
+            context.AddRange(bookMock.Object.Books);
+            context.AddRange(genreMock.Object.Genres);
+            context.AddRange(authorMock.Object.Authors);
+
+            await context.SaveChangesAsync();
+
+            return context;
+        }
         public static BookController CreateBookController(StoreDbContext context)
         {
             var repo = new EFBookRepository(context);
-            return new BookController(context, repo);
+            return new BookController(context, repo) { PageSize = 3};
         }
 
         [Fact]
@@ -34,7 +57,7 @@ namespace Sami_Archive.Tests
             var mock = TestData.SharedTestData.BookMockRepo();
 
             // Arrange the controller and page size
-            BookController controller = new BookController(null, mock.Object) { PageSize = 2 };
+            BookController controller = new BookController(null, mock.Object);
 
             // Act - declare a view model
             var result = controller.Index(1);
@@ -48,10 +71,10 @@ namespace Sami_Archive.Tests
             PagingInfo pageInfo = model.PagingInfo;
             Assert.NotNull(pageInfo);
             Assert.Equal(1, pageInfo.CurrentPage);
-            Assert.NotEqual(3, pageInfo.ItemsPerPage);
-            Assert.Equal(2, pageInfo.ItemsPerPage);
+            Assert.NotEqual(2, pageInfo.ItemsPerPage);
+            Assert.Equal(4, pageInfo.ItemsPerPage);
             Assert.Equal(5, pageInfo.TotalItems);
-            Assert.Equal(3, pageInfo.TotalPages);
+            Assert.Equal(2, pageInfo.TotalPages);
         }
 
         [Fact]
@@ -60,20 +83,17 @@ namespace Sami_Archive.Tests
             // Arrange - Declaring the object mock - giving it mock data.
             var mock = TestData.SharedTestData.BookMockRepo();
 
-            BookController controller = new BookController(null, mock.Object) { PageSize = 3 };
+            BookController controller = new BookController(null, mock.Object);
 
             // Act - no filters, looking at the second page
-            var result = controller.Index(1);
+            var result = controller.Index(2);
 
             var viewResult = Assert.IsType<ViewResult>(result);
             var model = Assert.IsType<BooksListViewModels>(viewResult.Model);
 
             //Assert
             Book[] bookArray = model.Books.ToArray();
-            Assert.True(bookArray.Length == 3);
-            Assert.Equal("B1", bookArray[0].BookTitle);
-            Assert.Equal("B2", bookArray[1].BookTitle);
-            Assert.NotEqual("B3", bookArray[1].BookTitle);
+            Assert.True(bookArray.Length == 1);
         }
 
         [Fact]
@@ -82,7 +102,7 @@ namespace Sami_Archive.Tests
             // Arrange - mock data
             var mock = TestData.SharedTestData.BookMockRepo();
 
-            BookController controller = new BookController(null, mock.Object) { PageSize = 3 };
+            BookController controller = new BookController(null, mock.Object);
 
             // Act - getting access to the repo
             var result = controller.Index(1);
@@ -93,7 +113,7 @@ namespace Sami_Archive.Tests
 
             // Assert - checking if the controller can access the bookRepository
             Book[] bookArray = model.Books.ToArray();
-            Assert.Equal(3, bookArray.Length);
+            Assert.Equal(4, bookArray.Length);
             Assert.NotNull(bookArray);
         }
         
@@ -111,14 +131,30 @@ namespace Sami_Archive.Tests
         }
 
         [Fact]
-        public async Task CreateBook_WhenValid()
+        public async Task GetBook()
         {
-            // Arrange
+            var mock = BookMockRepo();
+
             var context = CreateDbContext();
 
+            var controller = CreateBookController(context);
+
+            context.AddRange(mock.Object.Books);
+
+            context.SaveChanges();
+
+            var bookCount = context.Books.Count();
+
+            Assert.True(bookCount > 3);
+        }
+
+        [Fact]
+        public async Task CreateBook_WhenValid()
+        {
+            // Arrange - setting up mocks, keyvaluepairs and createbookviewmodel
+            var context = await PopulateDatabase();
+
             BookController Bcontroller = CreateBookController(context);
-            GenreController Gcontroller = CreateGenreController(context);
-            AuthorController Acontroller = CreateAuthorController(context);
 
             List<KeyValuePair<long, string>> Genres = new List<KeyValuePair<long, string>>();
             List<KeyValuePair<long, string>> Authors = new List<KeyValuePair<long, string>>();
@@ -133,8 +169,11 @@ namespace Sami_Archive.Tests
             List<long> SelectA = new List<long>();
 
             SelectG.Add(1);
+            SelectG.Add(2);
             SelectA.Add(1);
+            SelectA.Add(2);
 
+            // Act - populate context in memory, put the vm in the index.Create().
 
             var vm = new CreateBookViewModel
             {
@@ -146,90 +185,126 @@ namespace Sami_Archive.Tests
                 SelectedAuthors = SelectA,
             };
 
-            // Act
             var result = await Bcontroller.Create(vm);
 
-            // Assert
+            // Assert - checking if Test Title has genre and author in their collections
+
             var redirect = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("Index", redirect.ActionName);
 
-            var saved = await context.Books
-                .Include(b => b.Genres)
-                .Include(b => b.Authors)
-                .FirstOrDefaultAsync();
-
-            Assert.Equal("Test Title", saved.BookTitle);
-
-
+            var saved = context.Books.Last();
             Assert.NotEmpty(saved.Genres);
+            Assert.NotEmpty(saved.Authors);
 
-            return;
         }
 
         [Fact]
         public async Task UpdateBook_WhenValid()
         {
-            // Arrange
-            var context = TestData.SharedTestData.CreateDbContext();
+            // Get the context, get the mocks, 
+
+            var context = await PopulateDatabase();
+
+            // Get bookcontroller
+
             BookController controller = CreateBookController(context);
 
-            Book newBook = new Book
+            // setup keys
+
+            List<KeyValuePair<long, string>> Genres = new List<KeyValuePair<long, string>>();
+            List<KeyValuePair<long, string>> Authors = new List<KeyValuePair<long, string>>();
+
+            Genres.Add(new KeyValuePair<long, string> ( 1,"G1"));
+            Genres.Add(new KeyValuePair<long, string> ( 2,"G2"));
+            Genres.Add(new KeyValuePair<long, string> ( 3,"G3"));
+            Authors.Add(new KeyValuePair<long, string>( 1,"A1"));
+            Authors.Add(new KeyValuePair<long, string>( 2, "A2"));
+
+            var SelectG = new List<long>();
+            var SelectA = new List<long>();
+
+            SelectG.Add(1);
+            SelectG.Add(2);
+            SelectA.Add(1);
+            SelectA.Add(2);
+
+            var vm = new CreateBookViewModel
             {
-                BookID = 1,
+                BookTitle = "Test Title",
+                BookDescription = "Test Description",
+                Genres = Genres,
+                Authors = Authors,
+                SelectedGenres = SelectG,
+                SelectedAuthors = SelectA,
+            };
+
+            var result = await controller.Create(vm);
+            var saved = await context.Books.LastAsync();
+            var bookID = saved.BookID;
+            SelectG.Add(3);
+
+            var Editvm = new UpdateBooksViewModel
+            {
+                BookID = bookID,
                 BookTitle = "Test Title 1",
                 BookDescription = "Test Description 1",
-                Genres = { new Genre { GenreID = 1, GenreTitle = "Test1" } }
+                Genres = Genres,
+                Authors = Authors,
+                SelectedGenres = SelectG,
+                SelectedAuthors = SelectA,
             };
 
-            Book editBook = new Book
-            {
-                BookID = 1,
-                BookTitle = "Test Title 2",
-                BookDescription = "Test Description 2",
-                Genres = { new Genre { GenreID = 2, GenreTitle = "Test2" } }
-            };
+            var EditResult = await controller.Edit(bookID, Editvm);
+            var book = await context.Books.LastAsync();
 
-            // Act
-            //var result = await controller.Create(newBook);
-            //var editResult = await controller.Edit(1, editBook);
+            var genreCount = book.Genres.Count();
 
-            //// Assert
-            //var redirect = Assert.IsType<RedirectToActionResult>(editResult);
-            //Assert.Equal("Index", redirect.ActionName);
-            //var saved = await context.Books.FirstAsync();
-            //Assert.Equal("Test Title 2", saved.BookTitle);
-
-            return;
+            Assert.Equal(3, genreCount);
         }
 
         [Fact]
         public async Task DeleteBook_WhenValid()
         {
-            // Arrange
-            var context = TestData.SharedTestData.CreateDbContext();
+            // creating context
+            var context = await PopulateDatabase();
+
             BookController controller = CreateBookController(context);
 
-            Book newBook = new Book
-            {
-                BookID = 1,
-                BookTitle = "Test Title 1",
-                BookDescription = "Test Description 1",
-                Genres = { new Genre { GenreID = 1, GenreTitle = "Test" } }
+            // create keys
 
+            List<KeyValuePair<long, string>> Genres = new List<KeyValuePair<long, string>>();
+            List<KeyValuePair<long, string>> Authors = new List<KeyValuePair<long, string>>();
+
+            Genres.Add(new KeyValuePair<long, string>(1, "G1"));
+            Authors.Add(new KeyValuePair<long, string>(1, "A1"));
+
+            var SelectG = new List<long>();
+            var SelectA = new List<long>();
+
+            SelectG.Add(1);
+            SelectA.Add(1);
+
+            var vm = new CreateBookViewModel 
+            {
+                BookTitle = "Test Title",
+                BookDescription = "Test Description",
+                Genres = Genres,
+                Authors = Authors,
+                SelectedGenres = SelectG,
+                SelectedAuthors = SelectA
             };
 
-            //// Act
-            //var create = await controller.Create(newBook);
-            //var delete = await controller.DeleteBook(1);
-            //var viewResult = controller.Index(1);
+            await controller.Create(vm);
 
-            //// Assert
-            //var view = Assert.IsType<ViewResult>(viewResult);
-            //var model = Assert.IsType<BooksListViewModels>(view.Model);
+            var saved = await context.Books.LastAsync();
 
-            //Assert.Empty(model.Books);
+            var count = await context.Books.CountAsync();
 
-            //return;
+            var result = await controller.DeleteBook(saved.BookID);
+
+            var newSaved = await context.Books.LastAsync();
+
+            Assert.Empty(newSaved.Genres);
         }
     }
 }

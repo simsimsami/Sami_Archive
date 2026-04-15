@@ -46,7 +46,8 @@ namespace Sami_Archive.Controllers
             });
         }
 
-        public IActionResult Create() {
+        public IActionResult Create()
+        {
 
             var CreateBookVM = new CreateBookViewModel
             {
@@ -59,7 +60,7 @@ namespace Sami_Archive.Controllers
                 .ToList()
             };
 
-            return View(CreateBookVM); 
+            return View(CreateBookVM);
         }
 
         [HttpPost]
@@ -83,20 +84,32 @@ namespace Sami_Archive.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit(long BookID)
+        public async Task<IActionResult> Edit(long BookID, string BookTitle, string BookDescription)
         {
-            var book = await _context.Books.FirstOrDefaultAsync(b => b.BookID == BookID);
-            return View(book);
+            var CreateBookVM = new UpdateBooksViewModel
+            {
+                BookID = BookID,
+                BookDescription = BookDescription,
+                Authors = _context.Authors
+                .Select(a => new KeyValuePair<long, string>(a.AuthorID, a.AuthorName))
+                .ToList(),
+
+                Genres = _context.Genres
+                .Select(g => new KeyValuePair<long, string>(g.GenreID, g.GenreTitle))
+                .ToList()
+            };
+
+            return View(CreateBookVM);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(long BookID, [Bind("BookID,Title,Description,Genre")] Book book)
+        public async Task<IActionResult> Edit(long BookID, [Bind("BookID,BookTitle,BookDescription,Genre,Author,SelectedGenres,SelectedAuthors")] UpdateBooksViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    await bookRepository.UpdateBookAsync(book);
+                    await bookRepository.UpdateBookAsync(viewModel);
                     return RedirectToAction("Index", "Book");
                 }
                 catch (Exception e)
@@ -108,7 +121,6 @@ namespace Sami_Archive.Controllers
             ModelState.AddModelError("", "Unable to save changes... ");
             return RedirectToAction("Index", "Book");
         }
-
 
         [HttpGet]
         public async Task<IActionResult> DeleteForm(long BookID)
