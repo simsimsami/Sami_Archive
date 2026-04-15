@@ -10,35 +10,14 @@ using Sami_Archive.Models;
 using Sami_Archive.Controllers;
 using Sami_Archive.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.InMemory;
+using static Sami_Archive.Tests.TestData.SharedTestData;
 
 
 namespace Sami_Archive.Tests
 {
     public class GenreControllerTest
     {
-        public static Mock<IGenreRepository> CreateMockRepo()
-        {
-            var mock = new Mock<IGenreRepository>();
-
-            mock.Setup(m => m.Genres).Returns((new List<Genre>
-            {
-                new Genre { GenreID = 1, GenreTitle = "G1" },
-                new Genre { GenreID = 2, GenreTitle = "G2" },
-                new Genre { GenreID = 3, GenreTitle = "G3" },
-                new Genre { GenreID = 4, GenreTitle = "G4" },
-            }).AsQueryable());
-
-            return mock;
-        }
-        private StoreDbContext CreateDBContext()
-        {
-            var options = new DbContextOptionsBuilder<StoreDbContext>()
-                .UseInMemoryDatabase($"TestDb_{Guid.NewGuid()}")
-                .Options;
-            return new StoreDbContext( options );
-        }
-        private GenreController CreateController(StoreDbContext context)
+        public static GenreController CreateGenreController(StoreDbContext context)
         {
             var repo = new EFGenreRepository(context);
             return new GenreController(context, repo);
@@ -48,7 +27,7 @@ namespace Sami_Archive.Tests
         public void Can_Send_Pagination_View_Model()
         {
             // Arrange mock data
-            var mock = GenreControllerTest.CreateMockRepo();
+            var mock = TestData.SharedTestData.GenreMockRepo();
 
             // Arrange the controller and page size
             GenreController controller = new GenreController(null, mock.Object) { PageSize = 3 };
@@ -69,7 +48,7 @@ namespace Sami_Archive.Tests
         public void Can_Paginate()
         {
             // Arrange mock data
-            var mock = GenreControllerTest.CreateMockRepo();
+            var mock = TestData.SharedTestData.GenreMockRepo();
 
             // Act - controller and result
             GenreController controller = new GenreController(null, mock.Object) { PageSize = 3 };
@@ -87,7 +66,7 @@ namespace Sami_Archive.Tests
         public void Can_Access_Repository()
         {
             // Arrange mock data
-            var mock = GenreControllerTest.CreateMockRepo();
+            var mock = TestData.SharedTestData.GenreMockRepo();
 
             GenreController controller = new GenreController(null, mock.Object) { PageSize = 3 };
 
@@ -106,8 +85,8 @@ namespace Sami_Archive.Tests
         public async Task CreateGenre_WhenValid()
         {
             // Arrange
-            var context = CreateDBContext();
-            GenreController controller = CreateController(context);
+            var context = TestData.SharedTestData.CreateDbContext();
+            GenreController controller = CreateGenreController(context);
 
             Genre newGenre = new Genre
             {
@@ -130,8 +109,8 @@ namespace Sami_Archive.Tests
         public async Task UpdateGenre_WhenValid()
         {
             // Arrange
-            var context = CreateDBContext();
-            GenreController controller = CreateController(context);
+            var context = TestData.SharedTestData.CreateDbContext();
+            GenreController controller = CreateGenreController(context);
 
             Genre genre = new Genre
             {
@@ -161,8 +140,8 @@ namespace Sami_Archive.Tests
         public async Task DeleteGenre_WhenValid()
         {
             // Arrange
-            var context = CreateDBContext();
-            var controller = CreateController(context);
+            var context = TestData.SharedTestData.CreateDbContext();
+            var controller = CreateGenreController(context);
             
             Genre genre = new Genre
             {

@@ -4,10 +4,12 @@
     <a class="btn btn-success btn-sm pull-right text-black" asp-controller="Genre" asp-action="Create">Create Genre</a>
 </div>
 
-@foreach (var p in Model?.Genres ?? Enumerable.Empty<Genre>())
-{
-    <partial name="GenreSummary" model="p" />
-}
+<div class="container text-center">
+    @foreach (var p in Model?.Genres ?? Enumerable.Empty<Genre>())
+    {
+        <partial name="GenreSummary" model="p" />
+    }
+</div>
 
 <div page-model="@Model?.PagingInfo" page-action="Index" page-classes-enabled="true"
      page-class="btn" page-class-normal="btn-outline-dark"

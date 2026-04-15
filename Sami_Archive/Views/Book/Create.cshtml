@@ -1,27 +1,29 @@
-﻿@model Book
+﻿@model CreateBookViewModel
 
 <form asp-action="Create" method="post" class="border border-black p-3 mb-3 col-6">
     <div class="form-group">
         <div class="mb-3 col-3">
-            <label asp-for="BookTitle" class="form-label"></label>
+            <label asp-for="BookTitle" class="form-label">Book Title</label>
             <input asp-for="BookTitle" class="form-control" />
         </div>
     </div>
     <div class="form-group">
-        <div class="mb-3 col-3">
-            <label asp-for="Genres" class="form-label"></label>
-            <input asp-for="Genres" class="form-control" />
-        </div>
+        <label asp-for="SelectedGenres">Select Genre</label>
+        <select asp-for="SelectedGenres"
+                asp-items="@(new SelectList(Model.Genres, "Key", "Value"))"
+                class="form-control">
+        </select>
     </div>
     <div class="form-group">
-        <div class="mb-3 col-3">
-            <label asp-for="Authors" class="form-label"></label>
-            <input asp-for="Authors" class="form-control" />
-        </div>
+        <label asp-for="SelectedAuthors">Select Author</label>
+        <select asp-for="SelectedAuthors"
+                asp-items="@(new SelectList(Model.Authors, "Key", "Value"))"
+                class="form-control">
+        </select>
     </div>
     <div class="form-group">
         <div class="mb-3">
-            <label asp-for="BookDescription" class="form-label"></label>
+            <label asp-for="BookDescription" class="form-label">Book Description</label>
             <input asp-for="BookDescription" class="form-control" />
         </div>
     </div>

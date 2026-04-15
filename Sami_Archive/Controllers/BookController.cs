@@ -11,13 +11,14 @@ namespace Sami_Archive.Controllers
         private readonly StoreDbContext _context;
         private IBookRepository bookRepository;
 
+
         public BookController(StoreDbContext context, IBookRepository repo)
         {
             _context = context;
             bookRepository = repo;
         }
 
-        public ViewResult Index(int page = 1, string? title = null)
+        public IActionResult Index(int page = 1, string? title = null)
         {
             var query = bookRepository.Books
                 .Include(b => b.Genres)
@@ -45,37 +46,25 @@ namespace Sami_Archive.Controllers
             });
         }
 
-        public ViewResult Create() => View();
-
-        [HttpGet]
-        public async Task<IActionResult> Edit(long BookID)
+        public IActionResult Create()
         {
-            var book = await _context.Books.FirstOrDefaultAsync(b => b.BookID == BookID);
-            return View(book);
-        }
 
-        [HttpPost]
-        public async Task<IActionResult> Edit(long BookID, [Bind("BookID,Title,Description,Genre")] Book book)
-        {
-            if (ModelState.IsValid)
+            var CreateBookVM = new CreateBookViewModel
             {
-                try
-                {
-                    await bookRepository.UpdateBookAsync(book);
-                    return RedirectToAction("Index", "Book");
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                    throw;
-                }
-            }
-            ModelState.AddModelError("", "Unable to save changes... ");
-            return RedirectToAction("Index", "Book");
+                Authors = _context.Authors
+                .Select(a => new KeyValuePair<long, string>(a.AuthorID, a.AuthorName))
+                .ToList(),
+
+                Genres = _context.Genres
+                .Select(g => new KeyValuePair<long, string>(g.GenreID, g.GenreTitle))
+                .ToList()
+            };
+
+            return View(CreateBookVM);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Book book)
+        public async Task<IActionResult> Create(CreateBookViewModel book)
         {
             if (ModelState.IsValid)
             {
@@ -92,6 +81,45 @@ namespace Sami_Archive.Controllers
             }
             ModelState.AddModelError("", "Error in Book ModelState");
             return View(book);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(long BookID, string BookTitle, string BookDescription)
+        {
+            var CreateBookVM = new UpdateBooksViewModel
+            {
+                BookID = BookID,
+                BookDescription = BookDescription,
+                Authors = _context.Authors
+                .Select(a => new KeyValuePair<long, string>(a.AuthorID, a.AuthorName))
+                .ToList(),
+
+                Genres = _context.Genres
+                .Select(g => new KeyValuePair<long, string>(g.GenreID, g.GenreTitle))
+                .ToList()
+            };
+
+            return View(CreateBookVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(long BookID, [Bind("BookID,BookTitle,BookDescription,Genre,Author,SelectedGenres,SelectedAuthors")] UpdateBooksViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await bookRepository.UpdateBookAsync(viewModel);
+                    return RedirectToAction("Index", "Book");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    throw;
+                }
+            }
+            ModelState.AddModelError("", "Unable to save changes... ");
+            return RedirectToAction("Index", "Book");
         }
 
         [HttpGet]

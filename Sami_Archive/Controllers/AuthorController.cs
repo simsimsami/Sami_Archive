@@ -127,6 +127,9 @@ namespace Sami_Archive.Controllers
             {
                 try
                 {
+                    var author = await _context.Authors.FindAsync(AuthorID);
+                    if (author == null) return NotFound($"Book with ID = {AuthorID} not found");
+                    
                     await authorRepository.DeleteAuthorAsync(AuthorID);
                     return RedirectToAction("Index", "Author");
                 }

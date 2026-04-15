@@ -4,11 +4,12 @@
     <a class="btn btn-success btn-sm pull-right text-black" asp-controller="Author" asp-action="Create">Create Author</a>
 </div>
 
-@foreach (var p in Model?.Authors ?? Enumerable.Empty<Author>())
-{
-    <partial name="AuthorSummary" model="p" />
-}
-
+<div class="container text-center">
+    @foreach (var p in Model?.Authors ?? Enumerable.Empty<Author>())
+    {
+        <partial name="AuthorSummary" model="p" />
+    }
+</div>
 
 <div page-model="@Model?.PagingInfo" page-action="Index" page-classes-enabled="true"
      page-class="btn" page-class-normal="btn-outline-dark"
