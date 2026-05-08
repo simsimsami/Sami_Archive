@@ -51,6 +51,7 @@ namespace Sami_Archive.Controllers
         public ViewResult Create() => View();
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Author author)
         {
             if (ModelState.IsValid)
@@ -66,8 +67,7 @@ namespace Sami_Archive.Controllers
                     throw;
                 }
             }
-            ModelState.AddModelError("", "Error in making author");
-            return RedirectToAction("Index", "Author");
+            return View(author);
         }
 
         [HttpGet]
@@ -78,6 +78,7 @@ namespace Sami_Archive.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(long AuthorID, [Bind("AuthorID,AuthorName")] Author author)
         {
             if (ModelState.IsValid)
@@ -121,6 +122,7 @@ namespace Sami_Archive.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteAuthor(long AuthorID)
         {
             if (ModelState.IsValid)

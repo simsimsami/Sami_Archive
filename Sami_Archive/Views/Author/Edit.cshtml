@@ -1,11 +1,13 @@
 ﻿@model Author
 
 <form asp-action="Edit" asp-route-AuthorID="model?.AuthorID" method="post" class="border border-black p-3 mb-3 col-6">
+    <div asp-validation-summary="All" class="text-danger"></div>
     <input asp-for="AuthorID" type="hidden">
     <div class="form-group">
         <div class="mb-3 col-3">
-            <label asp-for="AuthorName" class="form-label"></label>
+            <label asp-for="AuthorName" class="control-label">Re Enter Author Name</label>
             <input asp-for="AuthorName" class="form-control" />
+            <span asp-validation-for="AuthorName" class="text-danger" />
         </div>
     </div>
     <button class="btn btn-primary">Add</button>

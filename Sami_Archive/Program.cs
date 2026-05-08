@@ -33,6 +33,9 @@ app.MapControllerRoute("genre",
     "Genres/Page{genrePage}", 
     new { Controller = "GenreController", action = "Get " });
 
+app.MapControllerRoute(name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
 
 app.MapDefaultControllerRoute();
 

@@ -44,6 +44,7 @@ namespace Sami_Archive.Controllers
         public ViewResult Create() => View();
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Genre genre)
         {
             if (ModelState.IsValid)
@@ -59,8 +60,7 @@ namespace Sami_Archive.Controllers
                     throw;
                 }
             }
-            ModelState.AddModelError("", "Unable to create genre");
-            return RedirectToAction("Index", "Home");
+            return View(genre);
         }
 
         [HttpGet]
@@ -71,6 +71,7 @@ namespace Sami_Archive.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(long GenreID, [Bind("GenreID,GenreTitle")] Genre genre)
         {
             if (ModelState.IsValid)
@@ -111,6 +112,7 @@ namespace Sami_Archive.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteGenre(long GenreID)
         {
             if (ModelState.IsValid)
