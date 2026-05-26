@@ -12,13 +12,15 @@ namespace Sami_Archive.Controllers
         private readonly StoreDbContext _context;
         private readonly IBookRepository bookRepository;
         private readonly IGenreRepository genreRepository;
+        private readonly IAuthorRepository authorRepository;
 
 
-        public BookController(StoreDbContext context, IBookRepository _bookRepository, IGenreRepository _genreRepository)
+        public BookController(StoreDbContext context, IBookRepository _bookRepository, IGenreRepository _genreRepository, IAuthorRepository _authorRepository)
         {
             _context = context;
             bookRepository = _bookRepository;
             genreRepository = _genreRepository;
+            authorRepository = _authorRepository;
         }
 
         public IActionResult Index(int page = 1, string? title = null, List<string>? selectedGenres = null, List<string>? selectedAuthors = null)

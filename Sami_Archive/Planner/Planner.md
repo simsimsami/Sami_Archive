@@ -18,6 +18,8 @@ Genre filter buttons (finally)
 
 - Viewing the book in detail. (press or click the box and bring to a view page of it).
 
+Update genres and authors colour scheme.
+
 Which means - The index pages will only show 3 things.
 - Books title
 - Books image
@@ -41,3 +43,5 @@ implement roles in books for authors, for example - Sami Hamdan is a Writer, Ale
 - implement search function (getting a list of options).
 - rating feature (user can add their own rating).
 - images/pictures of books.
+
+Pictures you can upload yourself, or auto populate.

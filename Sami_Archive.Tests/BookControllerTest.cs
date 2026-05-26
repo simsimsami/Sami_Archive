@@ -48,17 +48,20 @@ namespace Sami_Archive.Tests
         {
             var bookRepo = new EFBookRepository(context);
             var genreRepo = new EFGenreRepository(context);
-            return new BookController(context, bookRepo, genreRepo) { PageSize = 3 };
+            var authorRepo = new EFAuthorRepository(context);
+            return new BookController(context, bookRepo, genreRepo, authorRepo) { PageSize = 3 };
         }
 
         [Fact]
         public void Can_Send_Pagination_View_Model()
         {
             // Arrange the mock data
-            var mock = TestData.SharedTestData.BookMockRepo();
+            var bookMock = TestData.SharedTestData.BookMockRepo();
+            var authorMock = TestData.SharedTestData.AuthorMockRepo();
+            var genreMock = TestData.SharedTestData.GenreMockRepo();
 
-            // Arrange the controller and page size
-            BookController controller = new BookController(null, mock.Object, null);
+            // Arrange the controller
+            BookController controller = new BookController(null, bookMock.Object, genreMock.Object, authorMock.Object);
 
             // Act - declare a view model
             var result = controller.Index(1);
@@ -73,37 +76,41 @@ namespace Sami_Archive.Tests
             Assert.NotNull(pageInfo);
             Assert.Equal(1, pageInfo.CurrentPage);
             Assert.NotEqual(2, pageInfo.ItemsPerPage);
-            Assert.Equal(4, pageInfo.ItemsPerPage);
+            Assert.Equal(10, pageInfo.ItemsPerPage);
             Assert.Equal(5, pageInfo.TotalItems);
-            Assert.Equal(2, pageInfo.TotalPages);
+            Assert.Equal(1, pageInfo.TotalPages);
         }
 
         [Fact]
         public void Can_Paginate()
         {
             // Arrange - Declaring the object mock - giving it mock data.
-            var mock = TestData.SharedTestData.BookMockRepo();
+            var bookMock = TestData.SharedTestData.BookMockRepo();
+            var authorMock = TestData.SharedTestData.AuthorMockRepo();
+            var genreMock = TestData.SharedTestData.GenreMockRepo();
 
-            BookController controller = new BookController(null, mock.Object, null);
+            BookController controller = new BookController(null, bookMock.Object, genreMock.Object, authorMock.Object);
 
             // Act - no filters, looking at the second page
-            var result = controller.Index(2);
+            var result = controller.Index(1);
 
             var viewResult = Assert.IsType<ViewResult>(result);
             var model = Assert.IsType<BooksListViewModels>(viewResult.Model);
 
             //Assert
             Book[] bookArray = model.Books.ToArray();
-            Assert.True(bookArray.Length == 1);
+            Assert.True(bookArray.Length == 5);
         }
 
         [Fact]
         public void Can_Access_Repository()
         {
             // Arrange - mock data
-            var mock = TestData.SharedTestData.BookMockRepo();
+            var bookMock = TestData.SharedTestData.BookMockRepo();
+            var authorMock = TestData.SharedTestData.AuthorMockRepo();
+            var genreMock = TestData.SharedTestData.GenreMockRepo();
 
-            BookController controller = new BookController(null, mock.Object, null);
+            BookController controller = new BookController(null, bookMock.Object, genreMock.Object, authorMock.Object);
 
             // Act - getting access to the repo
             var result = controller.Index(1);
@@ -114,7 +121,7 @@ namespace Sami_Archive.Tests
 
             // Assert - checking if the controller can access the bookRepository
             Book[] bookArray = model.Books.ToArray();
-            Assert.Equal(4, bookArray.Length);
+            Assert.Equal(5, bookArray.Length);
             Assert.NotNull(bookArray);
         }
 
@@ -372,6 +379,15 @@ namespace Sami_Archive.Tests
             var newSaved = await context.Books.LastAsync();
 
             Assert.Empty(newSaved.Genres);
+        }
+
+
+        // I want to write invalid tests to improve my project
+
+        [Fact]
+        public async Task Invalid_Error_Method()
+        {
+
         }
     }
 }
