@@ -17,6 +17,7 @@ using static Sami_Archive.Tests.TestData.SharedTestData;
 using static Sami_Archive.Tests.GenreControllerTest;
 using static Sami_Archive.Tests.AuthorControllerTest;
 using Sami_Archive.Tests.TestData;
+using System.ComponentModel.DataAnnotations;
 
 namespace Sami_Archive.Tests
 {
@@ -385,9 +386,110 @@ namespace Sami_Archive.Tests
         // I want to write invalid tests to improve my project
 
         [Fact]
-        public async Task Invalid_Error_Method()
+        public async Task GetBooks_EmptyDatabase_ReturnsZeroBooks()
         {
+            // Arrange
+            var context = CreateDbContext();
+            var controller = CreateBookController(context);
 
+            // No books seeded intentionally
+
+            // Act
+            var result = controller.Index(1) as ViewResult;
+
+            // Assert
+            var model = result.Model as BooksListViewModels;
+
+
+            Assert.NotNull(result); // Controller didnt crash or redirect.
+
+
+            Assert.NotNull(model);
+            Assert.Empty(model.Books);
+            Assert.Equal(0, model.PagingInfo.TotalItems);
+            Assert.Equal(1, model.PagingInfo.CurrentPage);
+        }
+
+        [Fact]
+        public async Task Books_MissingTitle_FailsValidation()
+        {
+            // Arrange
+
+            var validationResults = new List<ValidationResult>();
+
+            List<KeyValuePair<long, string>> Genres = new List<KeyValuePair<long, string>>();
+            List<KeyValuePair<long, string>> Authors = new List<KeyValuePair<long, string>>();
+
+            Genres.Add(new KeyValuePair<long, string>(1, "G1"));
+            Genres.Add(new KeyValuePair<long, string>(2, "G2"));
+
+            Authors.Add(new KeyValuePair<long, string>(1, "A1"));
+            Authors.Add(new KeyValuePair<long, string>(2, "A2"));
+
+            List<long> SelectG = new List<long>();
+            List<long> SelectA = new List<long>();
+
+
+            var vm = new CreateBookViewModel
+            {
+                BookTitle = null!,
+                BookDescription = "Test Description",
+                Genres = Genres,
+                Authors = Authors,
+                SelectedGenres = SelectG,
+                SelectedAuthors = SelectA,
+            };
+
+            var context = new ValidationContext(vm);
+
+            // Act
+
+            var isValid = Validator.TryValidateObject(vm, context, validationResults, true);
+
+            // Assert
+            Assert.False(isValid);
+            Assert.Contains(validationResults, v => v.MemberNames.Contains("BookTitle"));
+        }
+
+        [Fact]
+        public async Task CreateBook_MissingTitle_ReturnsViewWithSameModel()
+        {
+            // Arrange
+            var context = CreateDbContext();
+            var controller = CreateBookController(context);
+
+            // Simulate what the MVC pipeline would have flagged
+            controller.ModelState.AddModelError("BookTitle", "The BookTitle field is required.");
+
+            List<KeyValuePair<long, string>> Genres = new List<KeyValuePair<long, string>>();
+            List<KeyValuePair<long, string>> Authors = new List<KeyValuePair<long, string>>();
+
+            Genres.Add(new KeyValuePair<long, string>(1, "G1"));
+            Genres.Add(new KeyValuePair<long, string>(2, "G2"));
+
+            Authors.Add(new KeyValuePair<long, string>(1, "A1"));
+            Authors.Add(new KeyValuePair<long, string>(2, "A2"));
+
+            List<long> SelectG = new List<long>();
+            List<long> SelectA = new List<long>();
+
+            var vm = new CreateBookViewModel
+            {
+                BookTitle = null!,
+                BookDescription = "Test Description",
+                Genres = Genres,
+                Authors = Authors,
+                SelectedGenres = SelectG,
+                SelectedAuthors = SelectA,
+            };
+
+            // Act
+            var result = await controller.Create(vm) as ViewResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.False(controller.ModelState.IsValid);
+            Assert.Equal(vm, result.Model);
         }
     }
 }

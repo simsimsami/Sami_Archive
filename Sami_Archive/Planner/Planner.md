@@ -13,6 +13,9 @@ Initiate a new project, start the authentication then copy parts of the sami arc
 
 
 # Tasks
+
+expand negative tests
+
 Genre filter buttons (finally)
 - When viewing the books index, I wnat to get a list of genres as buttons to filter.
 
