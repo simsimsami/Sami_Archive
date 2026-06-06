@@ -1,14 +1,48 @@
 ﻿@model BooksListViewModels
 
+<form method="get" asp-controller="book" asp-action="Index">
+
+    @if (Model?.GenreFilter != null) {
+        <input type="hidden" name="genre" value="@Model.GenreFilter" />
+    }
+
+    <div style="grid-template-columns: 1fr 1fr;" class="d-grid gap-3">
+        <a class="btn btn-success btn-sm pull-right text-black" asp-controller="Book" asp-action="Create">Create Book</a>
+
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="false">
+                Genre Filter
+            </button>
+            <div class="dropdown-menu p-3">
+                    @foreach (var p in Model?.Genres ?? Enumerable.Empty<Genre>())
+                    {
+                        <div class="dropdown-item form-check">
+                            <input class="form-check-input"
+                            type="checkbox"
+                            name="selectedGenres"
+                            value="@p.GenreTitle"
+                            id="genre-@p.GenreTitle"
+                            @(Model?.GenreFilter?.Contains(p.GenreTitle) == true ? "checked" : "") />
+                            <label class="form-check-label" for="genre-@p.GenreTitle">
+                                @p.GenreTitle
+                            </label>
+                        </div>
+                    }
+                    <div class="dropdown-divider"></div>
+                    <button type="submit" class="btn btn-primary btn-sm w-100">Apply</button>
+                </div>
+            
+        </div>
+    </div>
+</form>
+
 <div>
-    <a class="btn btn-success btn-sm pull-right text-black" asp-controller="Book" asp-action="Create">Create Book</a>
+
+    @foreach (var p in Model?.Books ?? Enumerable.Empty<Book>())
+    {
+        <partial name="BookSummary" model="p" />
+    }
 </div>
-
-@foreach (var p in Model?.Books ?? Enumerable.Empty<Book>())
-{
-    <partial name="BookSummary" model="p" />
-}
-
 
 <div page-model="@Model?.PagingInfo" page-action="Index" page-classes-enabled="true"
      page-class="btn" page-class-normal="btn-outline-dark"

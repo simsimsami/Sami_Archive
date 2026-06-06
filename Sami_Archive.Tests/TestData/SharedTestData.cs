@@ -13,14 +13,21 @@ namespace Sami_Archive.Tests.TestData
         {
             var mock = new Mock<IBookRepository>();
 
-            mock.Setup(m => m.Books).Returns((new List<Book>
+            var bookOne = new Book { BookID = 1, BookTitle = "B1", BookDescription = "D1" };
+            bookOne.Genres.Add(new Genre { GenreID = 1, GenreTitle = "G1" });
+            bookOne.Authors.Add(new Author { AuthorID = 1, AuthorName = "A1" });
+
+            var books = new List<Book>
             {
                 new Book { BookID = 1, BookTitle = "B1", BookDescription = "D1" },
                 new Book { BookID = 2, BookTitle = "B2", BookDescription = "D2" },
                 new Book { BookID = 3, BookTitle = "B3", BookDescription = "D3" },
                 new Book { BookID = 4, BookTitle = "B4", BookDescription = "D4" },
                 new Book { BookID = 5, BookTitle = "B5", BookDescription = "D5" },
-            }).AsQueryable());
+            };
+
+            mock.Setup(m => m.Books).Returns(books.AsQueryable());
+
 
             return mock;
         }
@@ -55,13 +62,13 @@ namespace Sami_Archive.Tests.TestData
 
             return mock;
         }
-    
+
         public static StoreDbContext CreateDbContext()
         {
             var options = new DbContextOptionsBuilder<StoreDbContext>()
                 .UseInMemoryDatabase($"TestDb_{Guid.NewGuid()}")
                 .Options;
-            return new StoreDbContext( options );
+            return new StoreDbContext(options);
         }
     }
 }

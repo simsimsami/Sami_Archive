@@ -1,11 +1,13 @@
 ﻿@model Genre
 
 <form asp-action="Edit" asp-route-BookID="@Model?.GenreID" method="post" class="border border-black p-3 mb-3 col-6">
+    <div asp-validation-summary="All" class="text-danger"></div>
     <input asp-for="GenreID" type="hidden" />
     <div class="form-group">
         <div class="mb-3 col-3">
-            <label asp-for="GenreTitle" class="form-label">Genre Title</label>
+            <label asp-for="GenreTitle" class="control-label">Re Enter Genre Title</label>
             <input asp-for="GenreTitle" class="form-control" />
+            <span asp-validation-for="GenreTitle" class="text-danger" />
         </div>
     </div>
     <button class="btn btn-primary">Update</button>

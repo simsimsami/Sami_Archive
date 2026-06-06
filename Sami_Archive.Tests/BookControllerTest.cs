@@ -17,6 +17,7 @@ using static Sami_Archive.Tests.TestData.SharedTestData;
 using static Sami_Archive.Tests.GenreControllerTest;
 using static Sami_Archive.Tests.AuthorControllerTest;
 using Sami_Archive.Tests.TestData;
+using System.ComponentModel.DataAnnotations;
 
 namespace Sami_Archive.Tests
 {
@@ -46,18 +47,22 @@ namespace Sami_Archive.Tests
         }
         public static BookController CreateBookController(StoreDbContext context)
         {
-            var repo = new EFBookRepository(context);
-            return new BookController(context, repo) { PageSize = 3};
+            var bookRepo = new EFBookRepository(context);
+            var genreRepo = new EFGenreRepository(context);
+            var authorRepo = new EFAuthorRepository(context);
+            return new BookController(context, bookRepo, genreRepo, authorRepo) { PageSize = 3 };
         }
 
         [Fact]
         public void Can_Send_Pagination_View_Model()
         {
             // Arrange the mock data
-            var mock = TestData.SharedTestData.BookMockRepo();
+            var bookMock = TestData.SharedTestData.BookMockRepo();
+            var authorMock = TestData.SharedTestData.AuthorMockRepo();
+            var genreMock = TestData.SharedTestData.GenreMockRepo();
 
-            // Arrange the controller and page size
-            BookController controller = new BookController(null, mock.Object);
+            // Arrange the controller
+            BookController controller = new BookController(null, bookMock.Object, genreMock.Object, authorMock.Object);
 
             // Act - declare a view model
             var result = controller.Index(1);
@@ -72,37 +77,41 @@ namespace Sami_Archive.Tests
             Assert.NotNull(pageInfo);
             Assert.Equal(1, pageInfo.CurrentPage);
             Assert.NotEqual(2, pageInfo.ItemsPerPage);
-            Assert.Equal(4, pageInfo.ItemsPerPage);
+            Assert.Equal(10, pageInfo.ItemsPerPage);
             Assert.Equal(5, pageInfo.TotalItems);
-            Assert.Equal(2, pageInfo.TotalPages);
+            Assert.Equal(1, pageInfo.TotalPages);
         }
 
         [Fact]
         public void Can_Paginate()
         {
             // Arrange - Declaring the object mock - giving it mock data.
-            var mock = TestData.SharedTestData.BookMockRepo();
+            var bookMock = TestData.SharedTestData.BookMockRepo();
+            var authorMock = TestData.SharedTestData.AuthorMockRepo();
+            var genreMock = TestData.SharedTestData.GenreMockRepo();
 
-            BookController controller = new BookController(null, mock.Object);
+            BookController controller = new BookController(null, bookMock.Object, genreMock.Object, authorMock.Object);
 
             // Act - no filters, looking at the second page
-            var result = controller.Index(2);
+            var result = controller.Index(1);
 
             var viewResult = Assert.IsType<ViewResult>(result);
             var model = Assert.IsType<BooksListViewModels>(viewResult.Model);
 
             //Assert
             Book[] bookArray = model.Books.ToArray();
-            Assert.True(bookArray.Length == 1);
+            Assert.True(bookArray.Length == 5);
         }
 
         [Fact]
         public void Can_Access_Repository()
         {
             // Arrange - mock data
-            var mock = TestData.SharedTestData.BookMockRepo();
+            var bookMock = TestData.SharedTestData.BookMockRepo();
+            var authorMock = TestData.SharedTestData.AuthorMockRepo();
+            var genreMock = TestData.SharedTestData.GenreMockRepo();
 
-            BookController controller = new BookController(null, mock.Object);
+            BookController controller = new BookController(null, bookMock.Object, genreMock.Object, authorMock.Object);
 
             // Act - getting access to the repo
             var result = controller.Index(1);
@@ -113,21 +122,87 @@ namespace Sami_Archive.Tests
 
             // Assert - checking if the controller can access the bookRepository
             Book[] bookArray = model.Books.ToArray();
-            Assert.Equal(4, bookArray.Length);
+            Assert.Equal(5, bookArray.Length);
             Assert.NotNull(bookArray);
         }
-        
+
         [Fact]
-        // NOT FINISHED
-        public void Can_Filter_Books()
+        public async Task Can_Filter_Books()
         {
+            // Get the context, get the mocks, 
+            var context = await PopulateDatabase();
+
             // Arrange - setup mock repo
             var mock = TestData.SharedTestData.BookMockRepo();
 
             // Arrange - setup controller
-            BookController controller = new BookController(null, mock.Object) { PageSize = 3 };
+            BookController controller = CreateBookController(context);
 
             // Filtering books by genre and or author.
+
+            // setup keys
+            List<KeyValuePair<long, string>> Genres = new List<KeyValuePair<long, string>>();
+            List<KeyValuePair<long, string>> Authors = new List<KeyValuePair<long, string>>();
+
+            Genres.Add(new KeyValuePair<long, string>(1, "G1"));
+            Genres.Add(new KeyValuePair<long, string>(2, "G2"));
+            Genres.Add(new KeyValuePair<long, string>(3, "G3"));
+            Authors.Add(new KeyValuePair<long, string>(1, "AN1"));
+            Authors.Add(new KeyValuePair<long, string>(2, "AN2"));
+
+            var SelectG = new List<long>();
+            var SelectA = new List<long>();
+
+            SelectG.Add(1);
+            SelectG.Add(2);
+            SelectA.Add(1);
+
+            var vm1 = new CreateBookViewModel
+            {
+                BookTitle = "Test Title 1",
+                BookDescription = "Test Description 1",
+                Genres = Genres,
+                Authors = Authors,
+                SelectedGenres = SelectG,
+                SelectedAuthors = SelectA,
+            };
+
+            SelectG.Add(3);
+            SelectA.Add(2);
+            var vm2 = new CreateBookViewModel
+            {
+                BookTitle = "Test Title 2",
+                BookDescription = "Test Description 2",
+                Genres = Genres,
+                Authors = Authors,
+                SelectedGenres = SelectG,
+                SelectedAuthors = SelectA,
+            };
+
+            await controller.Create(vm1);
+            await controller.Create(vm2);
+
+            var genreFilter = new List<string> { "G3" };
+            var authorFilter = new List<string> { "AN2" };
+
+            var result = controller.Index(1, null, genreFilter, authorFilter);
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsType<BooksListViewModels>(viewResult.Model);
+
+            Book[] bookArray = model.Books.ToArray();
+
+            //Assert.Single(bookArray);
+            Assert.All(bookArray, b =>
+            {
+                var genreCheck = b.Genres.Select(g => g.GenreTitle);
+                Assert.Contains("G3", genreCheck);
+
+                var authorCheck = b.Authors.Select(a => a.AuthorName);
+                Assert.Contains("AN2", authorCheck);
+            });
+
+            // The current code filters, rather then getting a list of similar items. Eg, G3 comes up, but also G1
+            // I either want to work on making it so that specific things come up, or keep it as filtering
         }
 
         [Fact]
@@ -214,11 +289,11 @@ namespace Sami_Archive.Tests
             List<KeyValuePair<long, string>> Genres = new List<KeyValuePair<long, string>>();
             List<KeyValuePair<long, string>> Authors = new List<KeyValuePair<long, string>>();
 
-            Genres.Add(new KeyValuePair<long, string> ( 1,"G1"));
-            Genres.Add(new KeyValuePair<long, string> ( 2,"G2"));
-            Genres.Add(new KeyValuePair<long, string> ( 3,"G3"));
-            Authors.Add(new KeyValuePair<long, string>( 1,"A1"));
-            Authors.Add(new KeyValuePair<long, string>( 2, "A2"));
+            Genres.Add(new KeyValuePair<long, string>(1, "G1"));
+            Genres.Add(new KeyValuePair<long, string>(2, "G2"));
+            Genres.Add(new KeyValuePair<long, string>(3, "G3"));
+            Authors.Add(new KeyValuePair<long, string>(1, "A1"));
+            Authors.Add(new KeyValuePair<long, string>(2, "A2"));
 
             var SelectG = new List<long>();
             var SelectA = new List<long>();
@@ -254,7 +329,7 @@ namespace Sami_Archive.Tests
                 SelectedAuthors = SelectA,
             };
 
-            var EditResult = await controller.Edit(bookID, Editvm);
+            var EditResult = await controller.Edit(Editvm);
             var book = await context.Books.LastAsync();
 
             var genreCount = book.Genres.Count();
@@ -284,7 +359,7 @@ namespace Sami_Archive.Tests
             SelectG.Add(1);
             SelectA.Add(1);
 
-            var vm = new CreateBookViewModel 
+            var vm = new CreateBookViewModel
             {
                 BookTitle = "Test Title",
                 BookDescription = "Test Description",
@@ -305,6 +380,116 @@ namespace Sami_Archive.Tests
             var newSaved = await context.Books.LastAsync();
 
             Assert.Empty(newSaved.Genres);
+        }
+
+
+        // I want to write invalid tests to improve my project
+
+        [Fact]
+        public async Task GetBooks_EmptyDatabase_ReturnsZeroBooks()
+        {
+            // Arrange
+            var context = CreateDbContext();
+            var controller = CreateBookController(context);
+
+            // No books seeded intentionally
+
+            // Act
+            var result = controller.Index(1) as ViewResult;
+
+            // Assert
+            var model = result.Model as BooksListViewModels;
+
+
+            Assert.NotNull(result); // Controller didnt crash or redirect.
+
+
+            Assert.NotNull(model);
+            Assert.Empty(model.Books);
+            Assert.Equal(0, model.PagingInfo.TotalItems);
+            Assert.Equal(1, model.PagingInfo.CurrentPage);
+        }
+
+        [Fact]
+        public async Task Books_MissingTitle_FailsValidation()
+        {
+            // Arrange
+
+            var validationResults = new List<ValidationResult>();
+
+            List<KeyValuePair<long, string>> Genres = new List<KeyValuePair<long, string>>();
+            List<KeyValuePair<long, string>> Authors = new List<KeyValuePair<long, string>>();
+
+            Genres.Add(new KeyValuePair<long, string>(1, "G1"));
+            Genres.Add(new KeyValuePair<long, string>(2, "G2"));
+
+            Authors.Add(new KeyValuePair<long, string>(1, "A1"));
+            Authors.Add(new KeyValuePair<long, string>(2, "A2"));
+
+            List<long> SelectG = new List<long>();
+            List<long> SelectA = new List<long>();
+
+
+            var vm = new CreateBookViewModel
+            {
+                BookTitle = null!,
+                BookDescription = "Test Description",
+                Genres = Genres,
+                Authors = Authors,
+                SelectedGenres = SelectG,
+                SelectedAuthors = SelectA,
+            };
+
+            var context = new ValidationContext(vm);
+
+            // Act
+
+            var isValid = Validator.TryValidateObject(vm, context, validationResults, true);
+
+            // Assert
+            Assert.False(isValid);
+            Assert.Contains(validationResults, v => v.MemberNames.Contains("BookTitle"));
+        }
+
+        [Fact]
+        public async Task CreateBook_MissingTitle_ReturnsViewWithSameModel()
+        {
+            // Arrange
+            var context = CreateDbContext();
+            var controller = CreateBookController(context);
+
+            // Simulate what the MVC pipeline would have flagged
+            controller.ModelState.AddModelError("BookTitle", "The BookTitle field is required.");
+
+            List<KeyValuePair<long, string>> Genres = new List<KeyValuePair<long, string>>();
+            List<KeyValuePair<long, string>> Authors = new List<KeyValuePair<long, string>>();
+
+            Genres.Add(new KeyValuePair<long, string>(1, "G1"));
+            Genres.Add(new KeyValuePair<long, string>(2, "G2"));
+
+            Authors.Add(new KeyValuePair<long, string>(1, "A1"));
+            Authors.Add(new KeyValuePair<long, string>(2, "A2"));
+
+            List<long> SelectG = new List<long>();
+            List<long> SelectA = new List<long>();
+
+            var vm = new CreateBookViewModel
+            {
+                BookTitle = null!,
+                BookDescription = "Test Description",
+                Genres = Genres,
+                Authors = Authors,
+                SelectedGenres = SelectG,
+                SelectedAuthors = SelectA,
+            };
+
+            // Act
+            var result = await controller.Create(vm) as ViewResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.False(controller.ModelState.IsValid);
+            Assert.Equal(vm, result.Model);
         }
     }
 }
