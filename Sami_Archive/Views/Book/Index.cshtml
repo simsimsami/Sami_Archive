@@ -1,47 +1,91 @@
 ﻿@model BooksListViewModels
 
-<form method="get" asp-controller="book" asp-action="Index">
-
-    @if (Model?.GenreFilter != null) {
+<div class="m-2 row">
+    <form class="col" method="get" asp-controller="book" asp-action="Index">
+    </form>
+    @if (Model?.GenreFilter != null)
+    {
         <input type="hidden" name="genre" value="@Model.GenreFilter" />
     }
 
-    <div style="grid-template-columns: 1fr 1fr;" class="d-grid gap-3">
-        <a class="btn btn-success btn-sm pull-right text-black" asp-controller="Book" asp-action="Create">Create Book</a>
+    @if (Model?.AuthorFilter != null)
+    {
+        <input type="hidden" name="author" value="@Model.AuthorFilter" />
+    }
 
-        <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="false">
-                Genre Filter
-            </button>
-            <div class="dropdown-menu p-3">
-                    @foreach (var p in Model?.Genres ?? Enumerable.Empty<Genre>())
-                    {
-                        <div class="dropdown-item form-check">
-                            <input class="form-check-input"
-                            type="checkbox"
-                            name="selectedGenres"
-                            value="@p.GenreTitle"
-                            id="genre-@p.GenreTitle"
-                            @(Model?.GenreFilter?.Contains(p.GenreTitle) == true ? "checked" : "") />
-                            <label class="form-check-label" for="genre-@p.GenreTitle">
-                                @p.GenreTitle
-                            </label>
-                        </div>
-                    }
-                    <div class="dropdown-divider"></div>
-                    <button type="submit" class="btn btn-primary btn-sm w-100">Apply</button>
+
+    <div class="container">
+        <div class="row row-cols-4">
+            <div class="col-sm">
+                <a class="btn btn-success btn-sm pull-right text-black" asp-controller="Book" asp-action="Create">Create Book</a>
+            </div>
+            <div class="col-sm">
+                <div class="dropdown col">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="false">
+                        Genre Filter
+                    </button>
+                    <div class="dropdown-menu p-3">
+                        @foreach (var p in Model?.Genres ?? Enumerable.Empty<Genre>())
+                        {
+                            <div class="dropdown-item form-check">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="selectedGenres"
+                                       value="@p.GenreTitle"
+                                       id="genre-@p.GenreTitle"
+                                @(Model?.GenreFilter?.Contains(p.GenreTitle) == true ? "checked" : "") />
+                                <label class="form-check-label" for="genre-@p.GenreTitle">
+                                    @p.GenreTitle
+                                </label>
+                            </div>
+                        }
+                        <div class="dropdown-divider"></div>
+                        <button type="submit" class="btn btn-primary btn-sm w-100">Apply</button>
+                    </div>
                 </div>
-            
+            </div>
+            <div class="col-sm">
+
+                <div class="dropdown col">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="false">
+                        Author Filter
+                    </button>
+                    <div class="dropdown-menu p-3">
+                        @foreach (var p in Model?.Authors ?? Enumerable.Empty<Author>())
+                        {
+                            <div class="dropdown-item form-check">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="selectedAuthors"
+                                       value="@p.AuthorName"
+                                       id="author-@p.AuthorName"
+                                @( Model?.AuthorFilter?.Contains(p.AuthorName) == true ? "checked" : "") />
+                                <label class="form-check-label" for="author-@p.AuthorName">
+                                    @p.AuthorName
+                                </label>
+                            </div>
+                        }
+                        <div class="dropdown-divider"></div>
+                        <button type="submit" class="btn btn-primary btn-sm w-100">Apply</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm badge text-bg-primary text-wrap d-flex align-items-center justify-content-center">
+                <p class="m-0">
+                    Number of Items:
+                </p>
+            </div>
+
         </div>
     </div>
-</form>
 
-<div>
-
-    @foreach (var p in Model?.Books ?? Enumerable.Empty<Book>())
-    {
-        <partial name="BookSummary" model="p" />
-    }
+    <div class="mt-2">
+        @foreach (var p in Model?.Books ?? Enumerable.Empty<Book>())
+        {
+            <partial name="BookSummary" model="p" />
+        }
+    </div>
 </div>
 
 <div page-model="@Model?.PagingInfo" page-action="Index" page-classes-enabled="true"

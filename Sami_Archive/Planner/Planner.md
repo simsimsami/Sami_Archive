@@ -1,5 +1,11 @@
 # Planner
 
+1) Authors books.
+- - Click on a author, bring to a different page, and have a list of authors showcased.
+
+
+
+
 # bailey advice
 Add more spacing in between the books
 
@@ -17,6 +23,10 @@ Initiate a new project, start the authentication then copy parts of the sami arc
 ## Expand negative tests
 
 - Complete Suite of the book controller
+- - GetBooks_EmptyDatabase_ReturnsZeroBooks()
+- - Books_MissingTitle_FailsValidation()
+- - CreateBook_MissingProperties_ReturnsViewWithSameModel()
+
 - Complete Suite of the author controller
 - Complete Suite of the genre controller
 

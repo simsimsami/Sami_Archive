@@ -13,7 +13,7 @@
 </style>
 
 
-<div class="card btn btn-outline-dark">
+<div class="card btn btn-outline-dark mb-2 pb-3">
     <a asp-controller="Book"
        asp-action="Detail"
        asp-route-BookID="@Model?.BookID"
@@ -27,10 +27,21 @@
                     <h4>
                         @Model?.BookTitle
                     </h4>
-                    @foreach (var item in Model?.Genres)
-                    {
-                        <p>@item?.GenreTitle</p>
-                    }
+
+                    
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-auto">
+                            By
+                        </div>
+                        @foreach (var item in Model?.Authors)
+                        {
+                            <div class="col-md-auto">
+                                @item?.AuthorName, 
+                            </div>
+                        }
+                    </div>
                 </div>
             </div>
         </div>

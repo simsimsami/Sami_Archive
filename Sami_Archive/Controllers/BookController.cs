@@ -44,10 +44,13 @@ namespace Sami_Archive.Controllers
 
             var genres = genreRepository.Genres;
 
+            var authors = authorRepository.Authors;
+
             return View(new BooksListViewModels
             {
                 Books = books,
                 Genres = genres,
+                Authors = authors,
                 PagingInfo = new PagingInfo
                 {
                     CurrentPage = page,
