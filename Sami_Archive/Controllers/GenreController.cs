@@ -8,7 +8,7 @@ namespace Sami_Archive.Controllers
 {
     public class GenreController : Controller
     {
-        public int PageSize = 4;
+        public int PageSize = 10;
         private readonly StoreDbContext _context;
         private IGenreRepository genreRepository;
 

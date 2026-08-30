@@ -10,7 +10,7 @@ namespace Sami_Archive.Controllers
 {
     public class AuthorController : Controller
     {
-        public int PageSize = 4;
+        public int PageSize = 10;
         private readonly StoreDbContext _context;
         private IAuthorRepository authorRepository;
 

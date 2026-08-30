@@ -2,9 +2,15 @@
 
 <div>
     <div>
-        <h4>Image</h4>
-        <h4>
-            @Model?.BookTitle
-        </h4>
+        <img src="https://images6.alphacoders.com/652/thumb-350-652393.webp" />
+        <div class="col">
+            <h4>
+                @Model?.BookTitle
+            </h4>
+            @foreach (var item in Model?.Genres)
+            {
+                <p>@item?.GenreTitle</p>
+            }
+        </div>
     </div>
 </div>
