@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
+using Sami_Archive.Data;
 using Sami_Archive.Models;
 using Sami_Archive.Models.ViewModels;
 using System.Net;

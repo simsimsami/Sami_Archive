@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.InMemory;
 using Microsoft.AspNetCore.Authorization;
 using static Sami_Archive.Tests.TestData.SharedTestData;
+using Sami_Archive.Data;
 
 namespace Sami_Archive.Tests
 {

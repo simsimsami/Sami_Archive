@@ -11,6 +11,7 @@ using Sami_Archive.Controllers;
 using Sami_Archive.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using static Sami_Archive.Tests.TestData.SharedTestData;
+using Sami_Archive.Data;
 
 
 namespace Sami_Archive.Tests

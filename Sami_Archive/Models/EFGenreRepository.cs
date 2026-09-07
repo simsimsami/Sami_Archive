@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Sami_Archive.Data;
 
 namespace Sami_Archive.Models
 {

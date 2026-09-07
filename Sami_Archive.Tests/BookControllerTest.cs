@@ -18,6 +18,7 @@ using static Sami_Archive.Tests.GenreControllerTest;
 using static Sami_Archive.Tests.AuthorControllerTest;
 using Sami_Archive.Tests.TestData;
 using System.ComponentModel.DataAnnotations;
+using Sami_Archive.Data;
 
 namespace Sami_Archive.Tests
 {

@@ -1,4 +1,14 @@
-# Planner
+# Current Task:
+- Implementing authentication
+
+
+
+# Implementation Authentication
+Task:
+1. Implement authentication controller(s).
+2. Implement database for authentication.
+
+
 
 1) Authors books.
 - - Click on a author, bring to a different page, and have a list of authors showcased.
@@ -10,12 +20,6 @@
 Add more spacing in between the books
 
 # Bailey homework
-
-- implement required on genres and authors
-
-- work on authentication at the end
-
-Initiate a new project, start the authentication then copy parts of the sami archieve into the project
 
 
 # Tasks
@@ -68,4 +72,3 @@ Inside the view (or book details).
 
 
 - Implement images - use of URl, it will be much easier for a prototype.
-- 
