@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Sami_Archive.Data;
 using Sami_Archive.Models;
@@ -7,6 +8,7 @@ using System.Net;
 
 namespace Sami_Archive.Controllers
 {
+    [Authorize]
     public class BookController : Controller
     {
         public int PageSize = 10;

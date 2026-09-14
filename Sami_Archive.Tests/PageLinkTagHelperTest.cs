@@ -8,7 +8,6 @@ using Moq;
 using Sami_Archive.Infrastructure;
 using Sami_Archive.Models.ViewModels;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Sami_Archive.Tests
 {

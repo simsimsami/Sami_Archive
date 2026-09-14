@@ -12,7 +12,7 @@ builder.Services.AddDbContext<StoreDbContext>(options => options.UseSqlServer(co
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<StoreDbContext>();
+//builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<StoreDbContext>();
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<StoreDbContext>()
@@ -43,20 +43,45 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Lockout.AllowedForNewUsers = true;
     options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
     options.User.RequireUniqueEmail = false;
+
+    options.SignIn.RequireConfirmedAccount = false;
 });
 
 
+// -----> Looking for a standard MVC controller that does not exist
+//builder.Services.ConfigureApplicationCookie(options =>
+//{
+//    // Cookie settings
+//    options.Cookie.HttpOnly = true;
+//    options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+//    options.LoginPath = "/Account/Login";
+//    options.AccessDeniedPath = "/Account/AccessDenied";
+//    options.SlidingExpiration = true;
+//});
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    // Cookie settings
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+    options.LoginPath = "/Identity/Account/Login";
+    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+    options.SlidingExpiration = true;
+});
+
 var app = builder.Build();
-
-app.UseStaticFiles();
-
-app.UseAuthentication();
-app.UseAuthorization();
 
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+app.UseStaticFiles();
+
+app.UseAuthentication();
+
+app.UseRouting();
+app.UseAuthorization();
+app.UseHttpsRedirection();
 
 
 app.MapControllerRoute("book",
@@ -70,8 +95,9 @@ app.MapControllerRoute("genre",
 app.MapControllerRoute(name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+app.MapRazorPages();
 
-app.MapDefaultControllerRoute();
+//app.MapDefaultControllerRoute();
 
 SeedData.EnsurePopulated(app);
 

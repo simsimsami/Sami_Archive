@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 using Sami_Archive.Data;
@@ -9,6 +10,7 @@ using System.Net.Http;
 
 namespace Sami_Archive.Controllers
 {
+    [Authorize]
     public class AuthorController : Controller
     {
         public int PageSize = 10;

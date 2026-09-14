@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Sami_Archive.Models;
 using Sami_Archive.Models.ViewModels;
 
 namespace Sami_Archive.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         // The home controller is the library
@@ -15,7 +17,7 @@ namespace Sami_Archive.Controllers
             bookRepository = repo;
         }
 
-        public ViewResult Index()
+        public IActionResult Index()
         {
             return View();
         }
