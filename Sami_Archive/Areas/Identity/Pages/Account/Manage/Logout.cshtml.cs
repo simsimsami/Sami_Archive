@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Sami_Archive.Data;
 
-namespace Sami_Archive.Areas.Identity.Pages.Account;
+namespace Sami_Archive.Areas.Identity.Pages.Account.Manage;
 
 public class LogoutModel : PageModel
 {

@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using System;
+using System.Net.NetworkInformation;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Sami_Archive.Areas.Identity.Pages.Account.Manage;
@@ -60,6 +61,8 @@ public static class ManageNavPages
     /// </summary>
     public static string TwoFactorAuthentication => "TwoFactorAuthentication";
 
+    public static string Logout => "Logout";
+
     /// <summary>
     ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
     ///     directly from your code. This API may change or be removed in future releases.
@@ -107,6 +110,8 @@ public static class ManageNavPages
     ///     directly from your code. This API may change or be removed in future releases.
     /// </summary>
     public static string? TwoFactorAuthenticationNavClass(ViewContext viewContext) => PageNavClass(viewContext, TwoFactorAuthentication);
+
+    public static string? LogoutNavClass(ViewContext viewContext) => PageNavClass(viewContext, Logout);
 
     /// <summary>
     ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used

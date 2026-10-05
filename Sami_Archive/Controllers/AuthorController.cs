@@ -74,6 +74,17 @@ namespace Sami_Archive.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Detail(long? AuthorID)
+        {
+            var authorDetails = await _context.Authors
+                .Include(b => b.Books)
+                .ThenInclude(b => b.Authors)
+                .FirstOrDefaultAsync(b => b.AuthorID == AuthorID);
+
+            return View(authorDetails);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Edit(long AuthorID)
         {
             var author = await _context.Authors.FirstOrDefaultAsync(a => a.AuthorID == AuthorID);

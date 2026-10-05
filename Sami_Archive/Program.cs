@@ -44,7 +44,10 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
     options.User.RequireUniqueEmail = false;
 
-    options.SignIn.RequireConfirmedAccount = false;
+    // Conffirmed account to login to
+    options.SignIn.RequireConfirmedAccount = true;
+    // Token lifespan: 1 day is default
+    options.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultEmailProvider;
 });
 
 
@@ -73,7 +76,7 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.MapOpenApi().AllowAnonymous();
 }
 app.UseStaticFiles();
 

@@ -2,6 +2,8 @@
 @model LogoutModel
 @{
     ViewData["Title"] = "Log out";
+    ViewData["ActivePage"] = ManageNavPages.Logout;
+
 }
 
 <header>
@@ -19,3 +21,6 @@
         }
     }
 </header>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
