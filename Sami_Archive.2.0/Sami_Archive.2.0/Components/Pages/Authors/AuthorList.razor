@@ -1,0 +1,72 @@
+﻿@page "/authors"
+
+@rendermode InteractiveServer
+
+@inject AuthorServices Authors
+
+<h3>Author List</h3>
+
+<AuthorizeView Roles="Admin">
+    <Authorized>
+        <AuthorCreate OnCreated="LoadAuthors" />
+    </Authorized>
+</AuthorizeView>
+
+@if (authors is null)
+{
+    <p>Loading...</p>
+}
+else if (authors.Count == 0)
+{
+    <p>No authors yet.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Date Created</th>
+                <AuthorizeView Roles="Admin">
+                    <Authorized>
+                        <th scope="col">Option</th>
+                    </Authorized>
+                </AuthorizeView>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var author in authors)
+            {
+                <tr>
+                    <td scope="row">@author.AuthorID</td>
+                    <td scope="row">@author.AuthorName</td>
+                    <td scope="row">@author.DateCreated</td>
+                    <AuthorizeView Roles="Admin">
+                        <Authorized>
+                            <td scope="row">
+                                <AuthorDelete AuthorID="@author.AuthorID" OnDelete="LoadAuthors" />
+                            </td>
+                        </Authorized>
+                    </AuthorizeView>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
+
+
+@code {
+    private List<Author>? authors;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAuthors();
+    }
+
+    private async Task LoadAuthors()
+    {
+        authors = await Authors.GetAllAsync();
+    }
+}

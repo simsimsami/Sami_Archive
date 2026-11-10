@@ -1,0 +1,56 @@
+﻿@page "/books"
+
+@using System.Text
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.WebUtilities
+@using Sami_Archive._2._0.Components.Account.Pages.Manage
+@using Sami_Archive._2._0.Data
+@using Sami_Archive._2._0.Models
+@using Sami_Archive._2._0.Services
+
+@inject BookServices Books
+
+<h1>Books</h1>
+
+
+<AuthorizeView Roles="Admin">
+    <Authorized>
+
+        <h2>This will be the adding route</h2>
+
+        <h2>This part is restricted - routes for Create, Editing and Deleting</h2>
+
+    </Authorized>
+</AuthorizeView>
+
+<h2>This part should not be restricted - list of books, review book and comment on book</h2>
+
+@if (books is null)
+{
+    <p>Loading...</p>
+}
+else if (books.Count == 0)
+{
+    <p>No books yet.</p>
+}
+else
+{
+    <ul>
+        @foreach (var book in books)
+        {
+            <li>
+                <strong>@book.BookTitle</strong>
+                <div>@book.BookDescription</div>
+            </li>
+        }
+    </ul>
+}
+
+@code {
+    private List<Book>? books;
+
+    protected override async Task OnInitializedAsync()
+    {
+        books = await Books.GetAllAsync();
+    }
+}

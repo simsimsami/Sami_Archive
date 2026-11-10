@@ -1,0 +1,69 @@
+﻿@page "/genres"
+
+@rendermode InteractiveServer
+
+@inject GenreServices Genres
+
+<h3>Genre List</h3>
+
+<AuthorizeView Roles="Admin">
+    <Authorized>
+        <GenreCreate OnCreated="LoadGenres" />
+    </Authorized>
+</AuthorizeView>
+
+
+@if (genres is null)
+{
+    <p>Loading...</p>
+}
+else if (genres.Count == 0)
+{
+    <p>No genres yet.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Date Created</th>
+                <AuthorizeView Roles="Admin">
+                    <Authorized>
+                        <th scope="col">Option</th>
+                    </Authorized>
+                </AuthorizeView>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var genre in genres)
+        {
+            <div class="row" @key="genre.GenreID">
+                <div class="col">@genre.GenreName</div>
+                <div class="col">@genre.DateCreated</div>
+                <AuthorizeView Roles="Admin">
+                    <Authorized>
+                        <GenreDelete GenreID="@genre.GenreID" OnDelete="LoadGenres" />
+                    </Authorized>
+                </AuthorizeView>
+            </div>
+        }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    private List<Genre>? genres;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadGenres();
+    }
+
+    private async Task LoadGenres()
+    {
+        genres = await Genres.GetAllAsync();
+    }
+}

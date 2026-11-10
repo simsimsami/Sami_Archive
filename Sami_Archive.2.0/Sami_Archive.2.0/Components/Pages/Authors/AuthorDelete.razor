@@ -1,0 +1,17 @@
+﻿@inject AuthorServices Authors
+
+<div class="col">
+    <button @onclick="DeleteAsync" type="submit">Delete Author</button>
+</div>
+
+
+@code {
+    [Parameter] public long AuthorID { get; set; }
+    [Parameter] public EventCallback OnDelete { get; set; }
+
+    private async Task DeleteAsync()
+    {
+        await Authors.DeleteAsync(AuthorID);
+        await OnDelete.InvokeAsync();
+    }
+}

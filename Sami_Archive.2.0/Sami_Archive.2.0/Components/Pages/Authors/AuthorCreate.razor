@@ -1,0 +1,37 @@
+﻿@inject AuthorServices Authors
+
+<EditForm Model="newAuthor" OnValidSubmit="HandleSubmit" FormName="authorCreate">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+
+    <div class="container">
+        <div class="row">
+
+            <div class="md:col-auto">Author Name</div>
+
+            <div class="md:col-auto">
+                <InputText @bind-Value="newAuthor.AuthorName" />
+            </div>
+
+            <div class="md:col-auto">
+                <button type="submit">Create Author</button>
+            </div>
+
+        </div>
+    </div>
+
+</EditForm>
+
+@code {
+    [Parameter] public EventCallback OnCreated { get; set; }
+
+    private Author newAuthor = new();
+
+    private async Task HandleSubmit()
+    {
+        await Authors.AddAsync(newAuthor);
+        newAuthor = new Author();
+        await OnCreated.InvokeAsync();
+    }
+}

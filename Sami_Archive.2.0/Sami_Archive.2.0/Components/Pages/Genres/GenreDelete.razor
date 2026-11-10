@@ -1,0 +1,16 @@
+﻿@inject GenreServices Genres
+
+<div class="col">
+    <button @onclick="DeleteGenre" type="submit">Delete</button>
+</div>
+
+@code {
+    [Parameter] public long GenreID { get; set; }
+    [Parameter] public EventCallback OnDelete { get; set; }
+
+    private async Task DeleteGenre ()
+    {
+        await Genres.DeleteAsync(GenreID);
+        await OnDelete.InvokeAsync();
+    }
+}

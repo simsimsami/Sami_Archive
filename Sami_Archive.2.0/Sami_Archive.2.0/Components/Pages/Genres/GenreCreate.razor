@@ -1,0 +1,37 @@
+﻿@inject GenreServices Genres
+
+<EditForm Model="newGenre" OnValidSubmit="HandleSubmit" FormName="genreCreate">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="container">
+        <div class="row">
+
+            <div class="md:col-auto">Genre Name</div>
+
+            <div class="md:col-auto">
+                <InputText @bind-Value="newGenre.GenreName"/>
+            </div>
+
+            <div class="col:md-auto">
+                <button type="submit">Create Genre</button>
+            </div>
+
+        </div>
+    </div>
+
+</EditForm>
+
+
+@code {
+    [Parameter] public EventCallback OnCreated { get; set; }
+
+    private Genre newGenre = new();
+
+    private async Task HandleSubmit()
+    {
+        await Genres.AddAsync(newGenre);
+        newGenre = new Genre();
+        await OnCreated.InvokeAsync();
+    }
+}
