@@ -1,14 +1,18 @@
 ﻿@model GenresListViewModels
 
-<div>
-    <a class="btn btn-success btn-sm pull-right text-black" asp-controller="Genre" asp-action="Create">Create Genre</a>
-</div>
+<div class="m-2">
 
-<div class="container text-center">
-    @foreach (var p in Model?.Genres ?? Enumerable.Empty<Genre>())
-    {
-        <partial name="GenreSummary" model="p" />
-    }
+    <div>
+        <a class="btn btn-success btn-sm pull-right text-black" asp-controller="Genre" asp-action="Create">Create Genre</a>
+    </div>
+
+    <div class="container text-center">
+        @foreach (var p in Model?.Genres ?? Enumerable.Empty<Genre>())
+        {
+            <partial name="GenreSummary" model="p" />
+        }
+    </div>
+
 </div>
 
 <div page-model="@Model?.PagingInfo" page-action="Index" page-classes-enabled="true"

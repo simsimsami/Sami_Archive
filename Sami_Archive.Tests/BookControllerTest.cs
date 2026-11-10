@@ -452,7 +452,7 @@ namespace Sami_Archive.Tests
         }
 
         [Fact]
-        public async Task CreateBook_MissingTitle_ReturnsViewWithSameModel()
+        public async Task CreateBook_MissingProperties_ReturnsViewWithSameModel()
         {
             // Arrange
             var context = CreateDbContext();

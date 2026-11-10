@@ -44,10 +44,13 @@ namespace Sami_Archive.Controllers
 
             var genres = genreRepository.Genres;
 
+            var authors = authorRepository.Authors;
+
             return View(new BooksListViewModels
             {
                 Books = books,
                 Genres = genres,
+                Authors = authors,
                 PagingInfo = new PagingInfo
                 {
                     CurrentPage = page,
@@ -113,7 +116,10 @@ namespace Sami_Archive.Controllers
             /// 
             /// The books class already contains authors, genres and itself. Just get the idea of what the user pressed, search for it, then present it as a view
             /// 
-            var bookDetails = _context.Books.FirstOrDefault(b => b.BookID == BookID);
+            var bookDetails = await _context.Books
+                .Include(b => b.Genres)
+                .Include(b => b.Authors)
+                .FirstOrDefaultAsync(b => b.BookID == BookID);
 
             if (bookDetails == null)
             {
