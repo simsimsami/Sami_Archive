@@ -16,7 +16,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("testMVCauth")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d1d77c739f2826088fa29039979bd7c9e15886fc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+378cdc71caaef491af9409d8a6d2701ca039e660")]
 [assembly: System.Reflection.AssemblyProductAttribute("testMVCauth")]
 [assembly: System.Reflection.AssemblyTitleAttribute("testMVCauth")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
